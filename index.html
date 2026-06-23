@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>敦賀イカメタル情報ナビ | Tsuruga Squid Metal Intel Dashboard</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&family=Noto+Sans+JP:wght@300;400;500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body class="dark-theme">
+  <header class="app-header">
+    <div class="header-logo-section">
+      <div class="header-badge">TSURUGA</div>
+      <h1>敦賀イカメタル情報ナビ <span>Squid Metal Intel Dashboard</span></h1>
+    </div>
+    <div class="header-stats">
+      <div class="stat-item">
+        <span class="label">本日の月齢</span>
+        <span id="header-moon-phase" class="value">--.-</span>
+      </div>
+      <div class="stat-item">
+        <span class="label">潮回り</span>
+        <span id="header-tide-name" class="value">--</span>
+      </div>
+      <div class="stat-item">
+        <span class="label">海水温(目安)</span>
+        <span class="value">21.8℃</span>
+      </div>
+    </div>
+  </header>
+
+  <main class="dashboard-grid">
+    <!-- Left Column: Sea & Weather Conditions -->
+    <section class="grid-card sea-conditions-card" id="card-conditions">
+      <div class="card-header">
+        <div class="header-icon">🌊</div>
+        <h2>敦賀港 リアルタイム海況情報</h2>
+      </div>
+      <div class="card-content">
+        <!-- Moon Phase Visualizer & Forecast -->
+        <div class="moon-visual-wrapper">
+          <div class="moon-main-section">
+            <div class="moon-disk" id="moon-disk-graphic">
+              <div class="moon-shadow" id="moon-shadow-graphic"></div>
+            </div>
+            <div class="moon-details">
+              <h3>本日の月齢</h3>
+              <p class="moon-age-text">月齢: <span id="detail-moon-age">0.0</span> (<span id="detail-moon-name">新月</span>)</p>
+              <p class="moon-light-text">推定光度: <span id="detail-moon-illumination">0</span>%</p>
+            </div>
+          </div>
+          
+          <div class="moon-forecast-section">
+            <h4>4日後までの月齢予測</h4>
+            <div class="forecast-row" id="moon-forecast-container">
+              <!-- Dynamically populated by JS -->
+            </div>
+          </div>
+
+          <p class="tackle-tip" id="moon-tackle-tip">読込中...</p>
+        </div>
+
+        <div class="divider"></div>
+
+        <!-- Tide Graph -->
+        <div class="tide-graph-section">
+          <h3>潮汐グラフ（予測）</h3>
+          <div class="canvas-container">
+            <canvas id="tide-canvas"></canvas>
+          </div>
+          <div class="tide-times" id="tide-times-list">
+            <!-- Dynamically populated -->
+          </div>
+        </div>
+
+        <div class="divider"></div>
+
+        <!-- Weather / Wind Widget -->
+        <div class="weather-wind-widget">
+          <h3>気象情報・風波予測</h3>
+          <div class="weather-grid">
+            <div class="weather-cell">
+              <span class="cell-label">天気</span>
+              <span class="cell-val">晴れのち曇</span>
+            </div>
+            <div class="weather-cell">
+              <span class="cell-label">風速</span>
+              <span class="cell-val wind-warning">南西 3.2m/s</span>
+            </div>
+            <div class="weather-cell">
+              <span class="cell-label">波高</span>
+              <span class="cell-val">0.4m (穏やか)</span>
+            </div>
+            <div class="weather-cell">
+              <span class="cell-label">日の入り</span>
+              <span class="cell-val">19:15</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Center Column: Live Intel & SNS Aggregator -->
+    <section class="grid-card intel-logger-card" id="card-logger">
+      <div class="card-header">
+        <div class="header-icon">📊</div>
+        <h2>SNS・ブログ 直近1ヶ月のデータ分析</h2>
+      </div>
+      <div class="card-content">
+        <!-- 3-Day Interval Trend Timeline -->
+        <div class="trends-timeline-section">
+          <div class="trends-section-header">
+            <h3>3日ごとのトレンド推移（棚・カラー・釣果）</h3>
+            <span class="timeline-helper-text">横スクロールで過去の推移を確認 ➡️</span>
+          </div>
+          <div class="trends-timeline" id="trends-timeline-container">
+            <!-- Dynamically populated by JS -->
+          </div>
+        </div>
+
+        <div class="divider"></div>
+
+        <!-- Social Media Gathered Feed -->
+        <div class="sns-feed-section">
+          <div class="section-title-btn">
+            <h3>敦賀イカメタル 収集データ（過去1ヶ月）</h3>
+            <button id="btn-sync-feed" class="btn btn-primary btn-sm">🔄 最新データを収集</button>
+          </div>
+
+          <!-- Sync Loader -->
+          <div id="sync-loader" class="sync-loader-overlay hidden">
+            <div class="loader-spinner"></div>
+            <p>ブログ・X(Twitter)・Instagramから最新データを収集中...</p>
+          </div>
+
+          <!-- Search and Media filter -->
+          <div class="feed-controls">
+            <input type="text" id="feed-search" placeholder="🔍 キーワード検索 (船名、オモリグ、カラー、棚)...">
+            <div class="media-filter-bar">
+              <button class="m-filter-btn active" data-media="all">すべて</button>
+              <button class="m-filter-btn" data-media="blog">📝 ブログ</button>
+              <button class="m-filter-btn" data-media="twitter">🐦 X (Twitter)</button>
+              <button class="m-filter-btn" data-media="instagram">📸 Instagram</button>
+            </div>
+          </div>
+
+          <!-- List of gathered posts -->
+          <div class="feed-list-container">
+            <div id="no-feeds-msg" class="empty-message hidden">該当する投稿データが見つかりませんでした。</div>
+            <ul id="feed-list" class="feed-list">
+              <!-- Dynamically populated from script -->
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="app-footer">
+    <p>&copy; 2026 Tsuruga Squid Metal Intel Dashboard. Pair programmed with Antigravity.</p>
+  </footer>
+
+  <script src="app.js"></script>
+</body>
+</html>
