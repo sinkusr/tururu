@@ -1,3 +1,23 @@
+// Global error catcher to display runtime errors on screen for debugging
+window.onerror = function(message, source, lineno, colno, error) {
+  const errDiv = document.createElement('div');
+  errDiv.style.position = 'fixed';
+  errDiv.style.top = '0';
+  errDiv.style.left = '0';
+  errDiv.style.width = '100%';
+  errDiv.style.background = '#ef4444';
+  errDiv.style.color = 'white';
+  errDiv.style.padding = '15px';
+  errDiv.style.zIndex = '999999';
+  errDiv.style.fontFamily = 'monospace';
+  errDiv.style.fontSize = '12px';
+  errDiv.style.lineHeight = '1.4';
+  errDiv.style.boxShadow = '0 4px 12px rgba(0,0,0,0.5)';
+  errDiv.innerHTML = `<strong>JS Execution Error detected:</strong><br>${message}<br>File: ${source}<br>Line: ${lineno} | Column: ${colno}`;
+  document.body.appendChild(errDiv);
+  return false;
+};
+
 // Tsuruga Squid Metal Intel Dashboard logic
 document.addEventListener('DOMContentLoaded', () => {
   // --- Data ---
@@ -134,139 +154,80 @@ document.addEventListener('DOMContentLoaded', () => {
   // Trends Timeline element
   const trendsTimelineContainer = document.getElementById('trends-timeline-container');
 
-  // --- Accurate Moon Calculation (Julian Date calibrated) ---
-  function getMoonPhase(date) {
-    const jd = (date.getTime() / 86400000) + 2440587.5;
-    const knownNewMoon = 2460290.35; 
-    const synodicMonth = 29.530588853;
-    
-    let age = (jd - knownNewMoon) % synodicMonth;
-    if (age < 0) age += synodicMonth;
-    
-    return {
-      age: Math.round(age * 10) / 10,
-      normalized: age / synodicMonth
-    };
-  }
-
-  function getMoonDetails(age, normPhase) {
-    let name = '若葉月';
-    let illumination = 0;
-    let tip = '';
-
-    illumination = Math.round((1 - Math.cos(normPhase * 2 * Math.PI)) * 50);
-
-    if (age < 1.5 || age >= 28) {
-      name = '新月';
-      tip = '🌟 闇夜チャンス！集魚灯が非常に効きやすく、イカが船 of 影に集まりやすい。浅い棚（15m〜25m）をメタルスッテの赤緑やピンクなど高アピール系で狙いましょう！';
-    } else if (age >= 1.5 && age < 6.5) {
-      name = '三日月';
-      tip = '🌙 月明かりが弱く、イカの警戒心も低め。前半はボトムから探り、集魚灯が効き始めたら中層（20m〜30m）のレンジキープを意識してください。';
-    } else if (age >= 6.5 && age < 9.5) {
-      name = '上弦の月';
-      tip = '🌓 月が少し明るくなります（現在：上弦の潮）。明るさに応じて棚が上下するため、まめなレンジサーチが必要です。オモリグとメタルスッテの両方を用意しましょう。';
-    } else if (age >= 9.5 && age < 13.5) {
-      name = '十日余りの月';
-      tip = '🌔 月明かりが強まり、イカがやや分散傾向に。船の影から外れた明暗の境界をオモリグ（20〜25号）のキャストで広く探るのが有効です。';
-    } else if (age >= 13.5 && age < 16.5) {
-      name = '満月';
-      tip = '🌕 月夜の定番パターン。イカが分散し棚が深くなりやすい（30m〜ボトム）。シルエットがはっきり出る「紫系」「黒系」「赤イエロー」のオモリグや、赤緑スッテが効きます。';
-    } else if (age >= 16.5 && age < 21.5) {
-      name = '十六夜月';
-      tip = '🌘 満月から欠けていく月。徐々に明かりが落ち着きますが、前半は月が高いため深場狙い。中盤以降に浅くなるチャンスがあります。';
-    } else if (age >= 21.5 && age < 24.5) {
-      name = '下弦の月';
-      tip = '🌗 深夜に月が昇るため、釣り開始時間帯（18時〜21時）は闇夜同様に好条件！集魚灯の点灯から早い時間帯での連発を狙いましょう。';
-    } else {
-      name = '有明の月';
-      tip = '🌒 月光が非常に弱く良好なイカメタルコンディション。グロー（夜光）系やケイムラ塗装のスッテ・エギでアピールするのが効果的です。';
-    }
-
-    return { name, illumination, tip };
-  }
-
-  function getTideName(age) {
-    const roundedAge = Math.floor(age);
-    if (roundedAge >= 0 && roundedAge <= 2) return '大潮';
-    if (roundedAge >= 3 && roundedAge <= 6) return '中潮';
-    if (roundedAge >= 7 && roundedAge <= 9) return '小潮';
-    if (roundedAge === 10) return '長潮';
-    if (roundedAge === 11) return '若潮';
-    if (roundedAge >= 12 && roundedAge <= 14) return '中潮';
-    if (roundedAge >= 15 && roundedAge <= 17) return '大潮';
-    if (roundedAge >= 18 && roundedAge <= 21) return '中潮';
-    if (roundedAge >= 22 && roundedAge <= 24) return '小潮';
-    if (roundedAge === 25) return '長潮';
-    if (roundedAge === 26) return '若潮';
-    return '中潮';
-  }
-
-  function updateMoonUI() {
+  // --- Accurate Moon Calculation (Julian Date calibrated)   function updateMoonUI() {
     const today = new Date();
     const moon = getMoonPhase(today);
     const details = getMoonDetails(moon.age, moon.normalized);
     const tideName = getTideName(moon.age);
 
-    headerMoonPhaseEl.textContent = moon.age.toFixed(1);
-    headerTideNameEl.textContent = tideName;
+    if (headerMoonPhaseEl) headerMoonPhaseEl.textContent = moon.age.toFixed(1);
+    if (headerTideNameEl) headerTideNameEl.textContent = tideName;
 
-    detailMoonAgeEl.textContent = moon.age.toFixed(1);
-    detailMoonNameEl.textContent = details.name;
-    detailMoonIlluminationEl.textContent = details.illumination;
-    moonTackleTipEl.textContent = details.tip;
+    if (detailMoonAgeEl) detailMoonAgeEl.textContent = moon.age.toFixed(1);
+    if (detailMoonNameEl) detailMoonNameEl.textContent = details.name;
+    if (detailMoonIlluminationEl) detailMoonIlluminationEl.textContent = details.illumination;
+    if (moonTackleTipEl) moonTackleTipEl.textContent = details.tip;
 
     // Draw main moon shadow
     let shadowShift = 0;
-    if (moon.normalized <= 0.5) {
-      shadowShift = moon.normalized * 200;
-      moonShadowGraphic.style.transform = `translateX(${shadowShift}%)`;
-      moonShadowGraphic.style.left = '0';
-      moonShadowGraphic.style.right = 'auto';
-    } else {
-      shadowShift = (moon.normalized - 0.5) * 200;
-      moonShadowGraphic.style.transform = `translateX(${shadowShift - 100}%)`;
-      moonShadowGraphic.style.left = 'auto';
-      moonShadowGraphic.style.right = '0';
+    if (moonShadowGraphic) {
+      if (moon.normalized <= 0.5) {
+        shadowShift = moon.normalized * 200;
+        moonShadowGraphic.style.transform = `translateX(${shadowShift}%)`;
+        moonShadowGraphic.style.left = '0';
+        moonShadowGraphic.style.right = 'auto';
+      } else {
+        shadowShift = (moon.normalized - 0.5) * 200;
+        moonShadowGraphic.style.transform = `translateX(${shadowShift - 100}%)`;
+        moonShadowGraphic.style.left = 'auto';
+        moonShadowGraphic.style.right = '0';
+      }
     }
 
     // --- Generate 4 Days Forecast ---
-    moonForecastContainer.innerHTML = '';
-    const dayOfWeekStr = ['日', '月', '火', '水', '木', '金', '土'];
-    
-    for (let d = 1; d <= 4; d++) {
-      const forecastDate = new Date(today.getTime() + d * 24 * 60 * 60 * 1000);
-      const m = forecastDate.getMonth() + 1;
-      const day = forecastDate.getDate();
-      const w = dayOfWeekStr[forecastDate.getDay()];
-      const label = `${m}/${day}(${w})`;
+    if (moonForecastContainer) {
+      moonForecastContainer.innerHTML = '';
+      const dayOfWeekStr = ['日', '月', '火', '水', '木', '金', '土'];
+      
+      for (let d = 1; d <= 4; d++) {
+        const forecastDate = new Date(today.getTime() + d * 24 * 60 * 60 * 1000);
+        const m = forecastDate.getMonth() + 1;
+        const day = forecastDate.getDate();
+        const w = dayOfWeekStr[forecastDate.getDay()];
+        const label = `${m}/${day}(${w})`;
 
-      const fMoon = getMoonPhase(forecastDate);
-      const fDetails = getMoonDetails(fMoon.age, fMoon.normalized);
+        const fMoon = getMoonPhase(forecastDate);
+        const fDetails = getMoonDetails(fMoon.age, fMoon.normalized);
 
-      const fItem = document.createElement('div');
-      fItem.className = 'forecast-item';
-      fItem.innerHTML = `
-        <span class="forecast-date">${label}</span>
-        <span class="forecast-age">${fMoon.age.toFixed(1)}</span>
-        <span class="forecast-name">${fDetails.name}</span>
-        <span class="forecast-ill">光度 ${fDetails.illumination}%</span>
-      `;
-      moonForecastContainer.appendChild(fItem);
+        const fItem = document.createElement('div');
+        fItem.className = 'forecast-item';
+        fItem.innerHTML = `
+          <span class="forecast-date">${label}</span>
+          <span class="forecast-age">${fMoon.age.toFixed(1)}</span>
+          <span class="forecast-name">${fDetails.name}</span>
+          <span class="forecast-ill">光度 ${fDetails.illumination}%</span>
+        `;
+        moonForecastContainer.appendChild(fItem);
+      }
     }
   }
 
   // --- Tide Graph Painting with Weather Icons Overlaid ---
   function drawTideChart() {
+    if (!tideCanvas) return;
     const ctx = tideCanvas.getContext('2d');
+    if (!ctx) return;
     const container = tideCanvas.parentElement;
-    const width = container.clientWidth;
+    if (!container) return;
+    const width = container.clientWidth || 300;
     const height = 120;
     
-    tideCanvas.width = width * window.devicePixelRatio;
-    tideCanvas.height = height * window.devicePixelRatio;
+    const dpr = window.devicePixelRatio || 1;
+    tideCanvas.width = width * dpr;
+    tideCanvas.height = height * dpr;
     tideCanvas.style.width = width + 'px';
     tideCanvas.style.height = height + 'px';
-    ctx.scale(window.devicePixelRatio, window.devicePixelRatio);
+    ctx.scale(dpr, dpr);
 
     const points = [];
     const getTideY = (h) => {
@@ -368,28 +329,31 @@ document.addEventListener('DOMContentLoaded', () => {
     ctx.arc(targetX, getTideY(currentHour), 4, 0, Math.PI * 2);
     ctx.fill();
 
-    tideTimesList.innerHTML = `
-      <div class="tide-time-box">
-        <span class="time-lbl">満潮</span>
-        <span class="time-val">04:30 (32cm)</span>
-      </div>
-      <div class="tide-time-box">
-        <span class="time-lbl">干潮</span>
-        <span class="time-val">10:45 (12cm)</span>
-      </div>
-      <div class="tide-time-box">
-        <span class="time-lbl">満潮</span>
-        <span class="time-val">16:30 (28cm)</span>
-      </div>
-      <div class="tide-time-box">
-        <span class="time-lbl">干潮</span>
-        <span class="time-val">22:45 (8cm)</span>
-      </div>
-    `;
+    if (tideTimesList) {
+      tideTimesList.innerHTML = `
+        <div class="tide-time-box">
+          <span class="time-lbl">満潮</span>
+          <span class="time-val">04:30 (32cm)</span>
+        </div>
+        <div class="tide-time-box">
+          <span class="time-lbl">干潮</span>
+          <span class="time-val">10:45 (12cm)</span>
+        </div>
+        <div class="tide-time-box">
+          <span class="time-lbl">満潮</span>
+          <span class="time-val">16:30 (28cm)</span>
+        </div>
+        <div class="tide-time-box">
+          <span class="time-lbl">干潮</span>
+          <span class="time-val">22:45 (8cm)</span>
+        </div>
+      `;
+    }
   }
 
   // --- Render 5-Day Weather Forecast ---
   function renderWeatherForecast() {
+    if (!weatherForecastContainer) return;
     weatherForecastContainer.innerHTML = '';
     const today = new Date();
     const dayOfWeekStr = ['日', '月', '火', '水', '木', '金', '土'];
@@ -402,6 +366,7 @@ document.addEventListener('DOMContentLoaded', () => {
       const label = d === 0 ? `本日 ${m}/${day}(${w})` : `${m}/${day}(${w})`;
 
       const data = WEATHER_FORECAST[d];
+      if (!data) continue;
       const card = document.createElement('div');
       card.className = `weather-forecast-card ${data.rough ? 'rough-sea' : ''}`;
 
@@ -418,6 +383,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // --- 3-Day Grouped Timeline Analytics ---
   function updateTrendsTimeline(activeFeeds) {
+    if (!trendsTimelineContainer) return;
     trendsTimelineContainer.innerHTML = '';
     const today = new Date();
     
@@ -519,6 +485,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // --- Render Social Feeds ---
   function renderFeeds() {
+    if (!feedList) return;
     feedList.innerHTML = '';
     
     const filteredFeeds = SOCIAL_FEEDS.filter(feed => {
@@ -536,14 +503,14 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     if (filteredFeeds.length === 0) {
-      noFeedsMsg.classList.remove('hidden');
+      if (noFeedsMsg) noFeedsMsg.classList.remove('hidden');
       updateTrendsTimeline([]);
       return;
     }
-    noFeedsMsg.classList.add('hidden');
+    if (noFeedsMsg) noFeedsMsg.classList.add('hidden');
 
     filteredFeeds.forEach(feed => {
-      const li = document.createElement('li');
+      const li = document.createElement('div');
       let mediaLabel = '📝 Blog';
       let badgeClass = 'badge-blog';
       if (feed.media === 'twitter') {
@@ -577,41 +544,47 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   // --- Search & Filtering Event Handlers ---
-  feedSearch.addEventListener('input', (e) => {
-    searchQuery = e.target.value;
-    renderFeeds();
-  });
-
-  mediaFilterButtons.forEach(btn => {
-    btn.addEventListener('click', () => {
-      mediaFilterButtons.forEach(b => b.classList.remove('active'));
-      btn.classList.add('active');
-      activeMediaFilter = btn.dataset.media;
+  if (feedSearch) {
+    feedSearch.addEventListener('input', (e) => {
+      searchQuery = e.target.value;
       renderFeeds();
     });
-  });
+  }
+
+  if (mediaFilterButtons) {
+    mediaFilterButtons.forEach(btn => {
+      btn.addEventListener('click', () => {
+        mediaFilterButtons.forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        activeMediaFilter = btn.dataset.media;
+        renderFeeds();
+      });
+    });
+  }
 
   // --- Simulate "Syncing Data" ---
-  btnSyncFeed.addEventListener('click', () => {
-    syncLoader.classList.remove('hidden');
-    
-    setTimeout(() => {
-      syncLoader.classList.add('hidden');
+  if (btnSyncFeed) {
+    btnSyncFeed.addEventListener('click', () => {
+      if (syncLoader) syncLoader.classList.remove('hidden');
       
-      const newSimulatedPost = {
-        id: Date.now(),
-        media: Math.random() > 0.5 ? 'twitter' : 'instagram',
-        date: new Date().toISOString().split('T')[0],
-        author: '一美丸 (釣果速報元)',
-        url: 'https://ameblo.jp/ichimimaru/',
-        body: '【速報】アカイカ好釣！棚20m〜25mの浅棚でヒット集中。小型メタルスッテ10号の赤緑、フルグローで数を伸ばしました！竿頭45杯と釣果急上昇！ #イカメタル #敦賀',
-        extracted: { catch: 45, minDepth: 20, maxDepth: 25, color: '赤緑' }
-      };
+      setTimeout(() => {
+        if (syncLoader) syncLoader.classList.add('hidden');
+        
+        const newSimulatedPost = {
+          id: Date.now(),
+          media: Math.random() > 0.5 ? 'twitter' : 'instagram',
+          date: new Date().toISOString().split('T')[0],
+          author: '一美丸 (釣果速報元)',
+          url: 'https://ameblo.jp/ichimimaru/',
+          body: '【速報】アカイカ好釣！棚20m〜25mの浅棚でヒット集中。小型メタルスッテ10号の赤緑、フルグローで数を伸ばしました！竿頭45杯と釣果急上昇！ #イカメタル #敦賀',
+          extracted: { catch: 45, minDepth: 20, maxDepth: 25, color: '赤緑' }
+        };
 
-      SOCIAL_FEEDS.unshift(newSimulatedPost);
-      renderFeeds();
-    }, 1500);
-  });
+        SOCIAL_FEEDS.unshift(newSimulatedPost);
+        renderFeeds();
+      }, 1500);
+    });
+  }
 
   // --- Initial Activation ---
   updateMoonUI();
