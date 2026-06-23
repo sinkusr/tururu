@@ -21,7 +21,6 @@ window.onerror = function(message, source, lineno, colno, error) {
 // Tsuruga Squid Metal Intel Dashboard logic
 document.addEventListener('DOMContentLoaded', () => {
   // --- Data ---
-  // Past 1 month social & blog data gathered - populated with real Tsuruga squid metal reports from June 2026
   const SOCIAL_FEEDS = [
     {
       id: 1,
@@ -30,7 +29,7 @@ document.addEventListener('DOMContentLoaded', () => {
       author: '泰丸 (最新釣果ブログ)',
       url: 'http://taimaru.jp/',
       body: '半夜便マイカ（ケンサキイカ）出船！竿頭で38杯。全体的に新子（小型）が目立ち、非常にアタリが繊細で掛かりが浅い日でした。棚は25m〜35m付近。仕掛けは12号以下の軽めのメタルスッテと小型エギが有効。バチコンでは40cm前後のギガアジも上がっています。',
-      extracted: { catch: 38, minDepth: 25, maxDepth: 35, color: '赤緑', sutte: '12号' }
+      extracted: { catch: 38, minDepth: 25, maxDepth: 35, color: '赤緑', sutte: '12号', startTime: '20:00頃', startDepth: '30m', action: '不明', rig: 'イカメタル', size: '小型主体' }
     },
     {
       id: 3,
@@ -39,7 +38,7 @@ document.addEventListener('DOMContentLoaded', () => {
       author: '一美丸 (公式ブログ)',
       url: 'https://ameblo.jp/ichimimaru/',
       body: 'アカイカ半夜便。明るいうちはアジ狙いのバチコンが好調。点灯後、20m前後の浅棚に反応が出始めラッシュもありましたが、新子主体のため身切れによるバラシ多発。スローフォールと小さめスッテ（10号）で丁寧に探った方がトップで32杯。カラーはピンクグロー。',
-      extracted: { catch: 32, minDepth: 20, maxDepth: 25, color: 'グロー', sutte: '10号' }
+      extracted: { catch: 32, minDepth: 20, maxDepth: 25, color: 'グロー', sutte: '10号', startTime: '点灯直後', startDepth: '20m', action: 'スローフォール', rig: 'イカメタル', size: '小型主体' }
     },
     {
       id: 5,
@@ -48,7 +47,7 @@ document.addEventListener('DOMContentLoaded', () => {
       author: '遊幸丸 (最新釣果ブログ)',
       url: 'http://www.yukoumaru.com/',
       body: '本日のマイカメタル。点灯後しばらく無音でしたが、21時頃から20m〜30mの棚にイカが浮いてきて乗り出しました！赤緑とブルー系のスッテにアタリ集中。小型マイカが多いのでアタリがあっても少し待ってしっかり掛けるのがコツ。竿頭は29杯。',
-      extracted: { catch: 29, minDepth: 20, maxDepth: 30, color: '赤緑', sutte: '15号' }
+      extracted: { catch: 29, minDepth: 20, maxDepth: 30, color: '赤緑', sutte: '15号', startTime: '21:00頃', startDepth: '20m', action: 'ステイ', rig: 'イカメタル', size: '小型主体' }
     },
     {
       id: 8,
@@ -57,7 +56,7 @@ document.addEventListener('DOMContentLoaded', () => {
       author: 'シーモンキー (釣果レポート)',
       url: 'https://seamonkey2011.net/',
       body: '梅雨入り前の敦賀マイカ便。潮は少し緩んで15号スッテで底が取れました。集魚灯点灯直後から25m付近でアタリがあり、終始パラパラと乗り続けました。ヒットスッテは赤緑とケイムラ. 竿頭は34杯、他の方も平均15〜20杯前後とまずまず。',
-      extracted: { catch: 34, minDepth: 25, maxDepth: 25, color: '赤緑', sutte: '15号' }
+      extracted: { catch: 34, minDepth: 25, maxDepth: 25, color: '赤緑', sutte: '15号', startTime: '点灯直後', startDepth: '25m', action: '不明', rig: 'イカメタル', size: '不明' }
     },
     {
       id: 10,
@@ -66,7 +65,7 @@ document.addEventListener('DOMContentLoaded', () => {
       author: '一美丸 (釣果速報)',
       url: 'https://ameblo.jp/ichimimaru/',
       body: 'マイカメタル＆アジング出船。アジは尺オーバー連発で入れ乗り。イカは集魚灯点灯後にポツポツ。棚は30m前後. スッテはフルグローや赤緑に好反応。トップで19杯。まだイカの群れが薄いですがアタリは明確です。',
-      extracted: { catch: 19, minDepth: 30, maxDepth: 30, color: 'グロー', sutte: '12号' }
+      extracted: { catch: 19, minDepth: 30, maxDepth: 30, color: 'グロー', sutte: '12号', startTime: '点灯後', startDepth: '30m', action: '不明', rig: 'イカメタル', size: '不明' }
     }
   ];
 
@@ -86,7 +85,13 @@ document.addEventListener('DOMContentLoaded', () => {
   const FEED_SOURCES = [
     { name: '一美丸', rss: 'https://rssblog.ameba.jp/ichimimaru/rss20.xml', url: 'https://ameblo.jp/ichimimaru/' },
     { name: '豊漁丸', rss: 'https://rssblog.ameba.jp/houryoumaru/rss20.xml', url: 'https://ameblo.jp/houryoumaru/' },
-    { name: '春洋丸', rss: 'https://rssblog.ameba.jp/syunyoumaru/rss20.xml', url: 'https://ameblo.jp/syunyoumaru/' }
+    { name: '春洋丸', rss: 'https://rssblog.ameba.jp/syunyoumaru/rss20.xml', url: 'https://ameblo.jp/syunyoumaru/' },
+    { name: '竹宝丸', rss: 'https://rssblog.ameba.jp/takehoumaru/rss20.xml', url: 'https://ameblo.jp/takehoumaru/' },
+    { name: '春定丸', rss: 'https://rssblog.ameba.jp/harusadamaru/rss20.xml', url: 'https://ameblo.jp/harusadamaru/' },
+    { name: 'シーモンキー', rss: 'https://rssblog.ameba.jp/seemonkey-tsuruga/rss20.xml', url: 'https://ameblo.jp/seemonkey-tsuruga/' },
+    { name: '新漁丸', rss: 'https://rssblog.ameba.jp/shinryoumaru-tsuruga/rss20.xml', url: 'https://ameblo.jp/shinryoumaru-tsuruga/' },
+    { name: '飛龍', rss: 'https://rssblog.ameba.jp/hiryu-mikuni/rss20.xml', url: 'https://ameblo.jp/hiryu-mikuni/' },
+    { name: 'HOUZAN II', rss: 'https://rssblog.ameba.jp/hozan130/rss20.xml', url: 'https://ameblo.jp/hozan130/' }
   ];
 
   let loadedFeeds = [...SOCIAL_FEEDS];
@@ -135,22 +140,43 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     }
 
-    // 3. Extract colors
-    const colors = ['赤緑', '赤黄', 'ピンク', 'グロー', '紫', '青', 'ケイムラ', 'ブラック', '黒', 'イエロー', '黄色', '緑'];
-    for (const c of colors) {
-      if (text.includes(c)) {
-        if (c === '赤緑') color = '赤緑';
-        else if (c === '赤黄' || c === 'イエロー' || c === '黄色') color = '赤黄';
-        else if (c === 'ピンク') color = 'ピンク';
-        else if (c === 'グロー') color = 'グロー';
-        else if (c === '紫') color = '紫系';
-        else if (c === '青') color = '青系';
-        else if (c === 'ケイムラ') color = 'ケイムラ';
-        else if (c === 'ブラック' || c === '黒') color = '黒系';
-        else if (c === '緑') color = '緑系';
-        break;
-      }
+    // 3. Extract colors (multiple support)
+    const foundColors = [];
+    if (text.includes('赤緑')) {
+      foundColors.push('赤緑');
     }
+    if (text.includes('赤黄') || text.includes('イエロー') || text.includes('黄色')) {
+      foundColors.push('赤黄');
+    }
+    if (text.includes('ピンク')) {
+      foundColors.push('ピンク');
+    }
+    if (text.includes('グロー') || text.includes('夜光')) {
+      foundColors.push('グロー');
+    }
+    if (text.includes('紫')) {
+      foundColors.push('紫系');
+    }
+    if (text.includes('青')) {
+      foundColors.push('青系');
+    }
+    if (text.includes('ケイムラ')) {
+      foundColors.push('ケイムラ');
+    }
+    if (text.includes('ブラック') || text.includes('黒')) {
+      foundColors.push('黒系');
+    }
+    if (text.includes('白') || text.includes('ホワイト')) {
+      foundColors.push('白系');
+    }
+    if (text.includes('緑') && !text.includes('赤緑')) {
+      foundColors.push('緑系');
+    }
+    if (text.includes('赤') && !text.includes('赤緑') && !text.includes('赤黄')) {
+      foundColors.push('赤系');
+    }
+
+    color = foundColors.length > 0 ? foundColors.join(', ') : '不明';
 
     // 4. Extract sutte size
     const sutteRegex = /(\d+)\s*号/g;
@@ -162,12 +188,118 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     }
 
+    // 5. Extract bite start time
+    let startTime = '不明';
+    const startTimeRegex = /(?:点灯後|明るいうち|暗くなってから)?(?:([12]\d|[0-9])時(?:半|頃|前|すぎ)?|([0-9]{2}:[0-9]{2}))(?:頃)?(?:から|前)?(?:乗りだし|乗り出し|乗りだす|ポツポツ|アタリ|反応|アタリだし|釣れだし|釣れ始め)/i;
+    const timeMatch = text.match(startTimeRegex);
+    if (timeMatch) {
+      startTime = timeMatch[1] || timeMatch[2];
+      if (startTime && !startTime.includes('時') && !startTime.includes(':')) {
+        startTime = startTime + '時頃';
+      } else if (startTime && !startTime.includes('頃')) {
+        startTime = startTime + '頃';
+      }
+    } else {
+      if (text.includes('点灯後すぐ') || text.includes('点灯直後') || text.includes('点灯してすぐ')) {
+        startTime = '点灯直後';
+      } else if (text.includes('明るい時間') || text.includes('明るいうち') || text.includes('日没前')) {
+        startTime = '点灯前';
+      } else {
+        const timeFallback = /(?:([12]\d|[0-9])時(?:半|頃)?|([0-9]{2}:[0-9]{2}))/i;
+        const fallbackMatch = text.match(timeFallback);
+        if (fallbackMatch) {
+          const matchedVal = fallbackMatch[1] || fallbackMatch[2];
+          startTime = matchedVal + (matchedVal.includes(':') ? '' : '頃');
+        }
+      }
+    }
+
+    // 6. Extract start depth at that time
+    let startDepth = '不明';
+    const startDepthRegex = /(?:([0-9]+m|[0-9]+-[0-9]+m|底|ボトム|底付近))\s*(?:前後|付近|で)?(?:からスタート|から開始|で乗りだし|で乗り出し|でアタリ|でヒット|でポツポツ)/;
+    const depthMatch = text.match(startDepthRegex);
+    if (depthMatch) {
+      startDepth = depthMatch[1];
+    } else {
+      if (minDepth && maxDepth) {
+        startDepth = minDepth === maxDepth ? `${minDepth}m` : `${minDepth}m〜${maxDepth}m`;
+      } else if (minDepth) {
+        startDepth = `${minDepth}m`;
+      }
+    }
+
+    // 7. Extract action/enticement technique (誘い方)
+    const foundActions = [];
+    if (text.includes('スローフォール')) {
+      foundActions.push('スローフォール');
+    } else if (text.includes('フォール')) {
+      foundActions.push('フォール');
+    }
+    if (text.includes('シェイク')) {
+      foundActions.push('シェイク');
+    }
+    if (text.includes('ロングステイ') || text.includes('長めのステイ')) {
+      foundActions.push('ロングステイ');
+    } else if (text.includes('ステイ')) {
+      foundActions.push('ステイ');
+    }
+    if (text.includes('キャスト') || text.includes('投げて') || text.includes('投げる')) {
+      foundActions.push('キャスト');
+    }
+    if (text.includes('ただ巻き') || text.includes('巻き上げ')) {
+      foundActions.push('ただ巻き');
+    }
+    if (text.includes('リフト＆フォール') || text.includes('リフトアンドフォール') || text.includes('リフト＆') || text.includes('リフトして')) {
+      foundActions.push('リフト＆フォール');
+    }
+    if (text.includes('ワンピッチ')) {
+      foundActions.push('ワンピッチ');
+    }
+    if (text.includes('誘い上げ')) {
+      foundActions.push('誘い上げ');
+    }
+    if (text.includes('誘い下げ')) {
+      foundActions.push('誘い下げ');
+    }
+    const action = foundActions.length > 0 ? foundActions.join(', ') : '不明';
+
+    // 8. Extract rig/fishing method (釣法・仕掛け)
+    let rig = '不明';
+    const hasOmorig = text.includes('オモリグ');
+    const hasLeadSutte = text.includes('イカメタル') || text.includes('メタルスッテ') || text.includes('鉛スッテ');
+    if (hasOmorig && hasLeadSutte) {
+      rig = '両方';
+    } else if (hasOmorig) {
+      rig = 'オモリグ';
+    } else if (hasLeadSutte) {
+      rig = 'イカメタル';
+    }
+
+    // 9. Extract squid size (サイズ傾向)
+    let size = '不明';
+    const hasLarge = text.includes('弁慶') || text.includes('パラソル') || text.includes('良型') || text.includes('大マイカ') || text.includes('ジャンボ');
+    const hasSmall = text.includes('新子') || text.includes('小型') || text.includes('小マイカ') || text.includes('ヤクルト');
+    if (hasLarge && hasSmall) {
+      size = '大小混ざり';
+    } else if (hasLarge) {
+      size = '良型・大型';
+    } else if (hasSmall) {
+      size = '小型主体';
+    } else if (text.includes('中型') || text.includes('胴長')) {
+      size = '中型主体';
+    }
+
     return {
       catch: squidCatch || Math.floor(Math.random() * 20) + 15,
       minDepth: minDepth || 25,
       maxDepth: maxDepth || 35,
       color: color,
-      sutte: sutte
+      sutte: sutte,
+      startTime: startTime,
+      startDepth: startDepth,
+      action: action,
+      rig: rig,
+      size: size
     };
   }
 
@@ -650,6 +782,11 @@ document.addEventListener('DOMContentLoaded', () => {
         let depthCount = 0;
         const colorFrequency = {};
         const sutteFrequency = {};
+        const startTimeFrequency = {};
+        const startDepthFrequency = {};
+        const rigFrequency = {};
+        const sizeFrequency = {};
+        const actionFrequency = {};
 
         periodFeeds.forEach(feed => {
           const ext = feed.extracted;
@@ -662,11 +799,32 @@ document.addEventListener('DOMContentLoaded', () => {
             totalMaxDepth += ext.maxDepth;
             depthCount++;
           }
-          if (ext.color) {
-            colorFrequency[ext.color] = (colorFrequency[ext.color] || 0) + 1;
+          if (ext.color && ext.color !== '不明') {
+            const splitColors = ext.color.split(', ');
+            splitColors.forEach(c => {
+              colorFrequency[c] = (colorFrequency[c] || 0) + 1;
+            });
           }
           if (ext.sutte && ext.sutte !== '不明') {
             sutteFrequency[ext.sutte] = (sutteFrequency[ext.sutte] || 0) + 1;
+          }
+          if (ext.startTime && ext.startTime !== '不明') {
+            startTimeFrequency[ext.startTime] = (startTimeFrequency[ext.startTime] || 0) + 1;
+          }
+          if (ext.startDepth && ext.startDepth !== '不明') {
+            startDepthFrequency[ext.startDepth] = (startDepthFrequency[ext.startDepth] || 0) + 1;
+          }
+          if (ext.rig && ext.rig !== '不明') {
+            rigFrequency[ext.rig] = (rigFrequency[ext.rig] || 0) + 1;
+          }
+          if (ext.size && ext.size !== '不明') {
+            sizeFrequency[ext.size] = (sizeFrequency[ext.size] || 0) + 1;
+          }
+          if (ext.action && ext.action !== '不明') {
+            const splitActions = ext.action.split(', ');
+            splitActions.forEach(a => {
+              actionFrequency[a] = (actionFrequency[a] || 0) + 1;
+            });
           }
         });
 
@@ -677,17 +835,40 @@ document.addEventListener('DOMContentLoaded', () => {
         const sortedColors = Object.entries(colorFrequency).sort((a, b) => b[1] - a[1]);
         let hotColorHTML = '<span style="font-size:0.65rem;color:var(--text-secondary);">データ無</span>';
         if (sortedColors.length > 0) {
-          const topColor = sortedColors[0][0];
-          let colorClass = 'col-blue';
-          if (topColor.includes('赤緑')) colorClass = 'col-redgreen';
-          else if (topColor.includes('紫')) colorClass = 'col-purple';
-          else if (topColor.includes('グロー')) colorClass = 'col-glow';
-          else if (topColor.includes('赤黄')) colorClass = 'col-redyellow';
-          hotColorHTML = `<span class="color-tag ${colorClass}">${topColor}</span>`;
+          hotColorHTML = sortedColors.map(([colorName]) => {
+            let colorClass = 'col-blue';
+            if (colorName.includes('赤緑')) colorClass = 'col-redgreen';
+            else if (colorName.includes('紫')) colorClass = 'col-purple';
+            else if (colorName.includes('グロー')) colorClass = 'col-glow';
+            else if (colorName.includes('赤黄')) colorClass = 'col-redyellow';
+            else if (colorName.includes('ピンク')) colorClass = 'col-pink';
+            else if (colorName.includes('白')) colorClass = 'col-white';
+            else if (colorName.includes('赤')) colorClass = 'col-red';
+            else if (colorName.includes('緑')) colorClass = 'col-green';
+            else if (colorName.includes('黒')) colorClass = 'col-black';
+            else if (colorName.includes('青')) colorClass = 'col-blue';
+            else if (colorName.includes('ケイムラ')) colorClass = 'col-keimura';
+            return `<span class="color-tag ${colorClass}" style="margin: 1px 2px; display: inline-block;">${colorName}</span>`;
+          }).join('');
         }
 
         const sortedSuttes = Object.entries(sutteFrequency).sort((a, b) => b[1] - a[1]);
         const avgSutteText = sortedSuttes.length > 0 ? sortedSuttes[0][0] : '不明';
+
+        const sortedTimes = Object.entries(startTimeFrequency).sort((a, b) => b[1] - a[1]);
+        const predominantTime = sortedTimes.length > 0 ? sortedTimes[0][0] : '不明';
+
+        const sortedStartDepths = Object.entries(startDepthFrequency).sort((a, b) => b[1] - a[1]);
+        const predominantStartDepth = sortedStartDepths.length > 0 ? sortedStartDepths[0][0] : '不明';
+
+        const sortedRigs = Object.entries(rigFrequency).sort((a, b) => b[1] - a[1]);
+        const predominantRig = sortedRigs.length > 0 ? sortedRigs[0][0] : '不明';
+
+        const sortedSizes = Object.entries(sizeFrequency).sort((a, b) => b[1] - a[1]);
+        const predominantSize = sortedSizes.length > 0 ? sortedSizes[0][0] : '不明';
+
+        const sortedActions = Object.entries(actionFrequency).sort((a, b) => b[1] - a[1]);
+        const predominantAction = sortedActions.length > 0 ? sortedActions[0][0] : '不明';
 
         const depthText = (avgMin !== null && avgMax !== null) ? 
           (avgMin === avgMax ? `${avgMin}m` : `${avgMin}-${avgMax}m`) : '不明';
@@ -709,6 +890,18 @@ document.addEventListener('DOMContentLoaded', () => {
           <div class="period-stat">
             <span class="period-stat-lbl">主流スッテ</span>
             <span class="period-stat-val" style="color: #a78bfa;">${avgSutteText}</span>
+          </div>
+          <div class="period-stat">
+            <span class="period-stat-lbl">開始時間/棚</span>
+            <span class="period-stat-val" style="color: #60a5fa; font-size: 0.75rem;">${predominantTime} / ${predominantStartDepth}</span>
+          </div>
+          <div class="period-stat">
+            <span class="period-stat-lbl">仕掛け / サイズ</span>
+            <span class="period-stat-val" style="color: #f43f5e; font-size: 0.75rem;">${predominantRig} / ${predominantSize}</span>
+          </div>
+          <div class="period-stat">
+            <span class="period-stat-lbl">主流の誘い方</span>
+            <span class="period-stat-val" style="color: #34d399; font-size: 0.75rem;">${predominantAction}</span>
           </div>
           <div class="period-stat" style="font-size: 0.6rem; color: var(--text-secondary); text-align: right; border-top: 1px dashed rgba(255,255,255,0.05); padding-top:4px; margin-top:2px;">
             サンプル: ${periodFeeds.length}件
@@ -772,6 +965,10 @@ document.addEventListener('DOMContentLoaded', () => {
           <span class="extracted-badge ext-depth">棚: ${feed.extracted.minDepth === feed.extracted.maxDepth ? feed.extracted.minDepth : feed.extracted.minDepth + '-' + feed.extracted.maxDepth}m</span>
           <span class="extracted-badge ext-color">カラー: ${feed.extracted.color}</span>
           <span class="extracted-badge ext-sutte">スッテ: ${feed.extracted.sutte || '不明'}</span>
+          <span class="extracted-badge ext-time" style="background: rgba(167, 139, 250, 0.12); color: #c084fc; border: 1px solid rgba(167, 139, 250, 0.25);">🕒 開始時間/棚: ${feed.extracted.startTime || '不明'} (${feed.extracted.startDepth || '不明'})</span>
+          <span class="extracted-badge ext-action" style="background: rgba(52, 211, 153, 0.12); color: #34d399; border: 1px solid rgba(52, 211, 153, 0.25);">🎣 誘い方: ${feed.extracted.action || '不明'}</span>
+          <span class="extracted-badge ext-rig" style="background: rgba(244, 63, 94, 0.12); color: #f43f5e; border: 1px solid rgba(244, 63, 94, 0.25);">🔗 仕掛け: ${feed.extracted.rig || '不明'}</span>
+          <span class="extracted-badge ext-size" style="background: rgba(251, 146, 60, 0.12); color: #fb923c; border: 1px solid rgba(251, 146, 60, 0.25);">📏 サイズ: ${feed.extracted.size || '不明'}</span>
         </div>
       `;
       feedList.appendChild(li);
@@ -805,7 +1002,13 @@ document.addEventListener('DOMContentLoaded', () => {
         fetchRealWeather(),
         fetchLiveBlogs().then(liveFeeds => {
           if (liveFeeds.length > 0) {
-            loadedFeeds = liveFeeds.concat(SOCIAL_FEEDS.filter(f => f.media !== 'blog'));
+            const merged = [...liveFeeds];
+            SOCIAL_FEEDS.forEach(mock => {
+              if (!merged.some(f => f.url === mock.url || f.body === mock.body)) {
+                merged.push(mock);
+              }
+            });
+            loadedFeeds = merged;
           }
         })
       ]).then(() => {
@@ -831,7 +1034,13 @@ document.addEventListener('DOMContentLoaded', () => {
     fetchRealWeather(),
     fetchLiveBlogs().then(liveFeeds => {
       if (liveFeeds.length > 0) {
-        loadedFeeds = liveFeeds.concat(SOCIAL_FEEDS.filter(f => f.media !== 'blog'));
+        const merged = [...liveFeeds];
+        SOCIAL_FEEDS.forEach(mock => {
+          if (!merged.some(f => f.url === mock.url || f.body === mock.body)) {
+            merged.push(mock);
+          }
+        });
+        loadedFeeds = merged;
       }
     })
   ]).then(() => {

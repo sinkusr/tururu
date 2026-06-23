@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>敦賀イカメタル情報ナビ v1.6.0 | Tsuruga Squid Metal Intel Dashboard</title>
+  <title>敦賀イカメタル情報ナビ v1.9.8 | Tsuruga Squid Metal Intel Dashboard</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&family=Noto+Sans+JP:wght@300;400;500;700&display=swap" rel="stylesheet">
@@ -13,7 +13,7 @@
   <header class="app-header">
     <div class="header-logo-section">
       <div class="header-badge">
-        TSURUGA <span class="version-badge">v1.6.0</span>
+        TSURUGA <span class="version-badge">v1.9.8</span>
         <a href="changelog.html" style="color: var(--primary); text-decoration: none; margin-left: 8px; font-weight: 500; border-bottom: 1px dashed var(--primary);">更新履歴</a>
       </div>
       <h1>敦賀イカメタル情報ナビ <span>Squid Metal Intel Dashboard</span></h1>
@@ -85,6 +85,36 @@
           <h3>敦賀沖 5日間の気象・風波予報</h3>
           <div class="weather-forecast-grid" id="weather-forecast-container">
             <!-- Dynamically populated by JS -->
+          </div>
+        </div>
+
+        <div class="divider"></div>
+
+        <!-- Official High-Reliability Marine Data & Safety -->
+        <div class="search-nav-widget" style="margin-bottom: 1rem;">
+          <h3 style="color: #34d399;">県・保安庁 公式海況データ（安全性・水温）</h3>
+          <div class="search-nav-links" style="grid-template-columns: 1fr;">
+            <a href="https://www6.kaiho.mlit.go.jp/08kanku/tsuruga/" target="_blank" rel="noopener noreferrer" class="search-nav-item" style="border-left: 3px solid #34d399;">
+              <span class="search-nav-icon">🚨</span>
+              <div class="search-nav-text">
+                <span class="search-nav-title" style="color: #34d399;">敦賀海上保安部 沿岸域情報 (海の安全情報)</span>
+                <span class="search-nav-desc">海上保安庁が提供するリアルタイムの敦賀港内・沿岸風速・気象警報</span>
+              </div>
+            </a>
+            <a href="https://www.jma.go.jp/bosai/warning/#area_type=offices&area_code=180000" target="_blank" rel="noopener noreferrer" class="search-nav-item" style="border-left: 3px solid #f59e0b;">
+              <span class="search-nav-icon">⚠️</span>
+              <div class="search-nav-text">
+                <span class="search-nav-title" style="color: #f59e0b;">気象庁 福井県警報・注意報</span>
+                <span class="search-nav-desc">出船判断に直結する強風・波浪・雷注意報の最新発令状況</span>
+              </div>
+            </a>
+            <a href="https://www.fklab.fukui.fukui.jp/ss/" target="_blank" rel="noopener noreferrer" class="search-nav-item" style="border-left: 3px solid #00d2ff;">
+              <span class="search-nav-icon">🔬</span>
+              <div class="search-nav-text">
+                <span class="search-nav-title" style="color: #00d2ff;">福井県水産試験場 公式ポータル</span>
+                <span class="search-nav-desc">福井県が実測調査する対馬暖流・若狭湾水温分布図・リアルタイム海況情報</span>
+              </div>
+            </a>
           </div>
         </div>
 
@@ -178,9 +208,9 @@
   </main>
 
   <footer class="app-footer">
-    <p>&copy; 2026 Tsuruga Squid Metal Intel Dashboard (v1.6.0). Pair programmed with Antigravity. | <a href="changelog.html" style="color: var(--primary); text-decoration: none; border-bottom: 1px dashed var(--primary);">更新履歴はこちら</a></p>
+    <p>&copy; 2026 Tsuruga Squid Metal Intel Dashboard (v1.9.1). Pair programmed with Antigravity. | <a href="changelog.html" style="color: var(--primary); text-decoration: none; border-bottom: 1px dashed var(--primary);">更新履歴はこちら</a></p>
   </footer>
 
-  <script src="app.js?v=1.6.0"></script>
+  <script src="app.js?v=1.9.1"></script>
 </body>
 </html>

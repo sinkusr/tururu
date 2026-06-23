@@ -546,6 +546,40 @@ body {
   color: white;
 }
 
+.col-pink {
+  background: #ec4899;
+  color: white;
+  box-shadow: 0 0 10px rgba(236, 72, 153, 0.2);
+}
+
+.col-white {
+  background: #ffffff;
+  color: #111827;
+  border: 1px solid #d1d5db;
+}
+
+.col-red {
+  background: #dc2626;
+  color: white;
+}
+
+.col-green {
+  background: #16a34a;
+  color: white;
+}
+
+.col-black {
+  background: #111827;
+  color: #ffffff;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.col-keimura {
+  background: linear-gradient(135deg, #a5f3fc 0%, #c084fc 100%);
+  color: #1e1b4b;
+  box-shadow: 0 0 10px rgba(165, 243, 252, 0.3);
+}
+
 /* Feed Section Styles */
 .feed-item {
   background: rgba(255, 255, 255, 0.02);
