@@ -101,7 +101,7 @@ document.addEventListener('DOMContentLoaded', () => {
       date: '2026-06-01',
       author: 'イカメタルマニア福井 (X情報)',
       url: 'https://x.com/search?q=%E6%95%A6%E8%B3%80%20%E3%82%A4%E3%82%AB%E3%83%A1%E3%82%BF%E3%83%AB&src=typed_query&f=live',
-      body: '敦賀沖イカメタルシーズン初期。水温は21度。まだヤリイカも少し混じりますが、ケンサキイカ（マイカ）メインになってきました。ボトム（40m付近）でのアタリが多く、重めのメタル20号でステイ長めが効果的。マイカ15杯確保。',
+      body: '敦賀沖イカメタル便。水温は21度. まだヤリイカも少し混じりますが、ケンサキイカ（マイカ）メインになってきました。ボトム（40m付近）でのアタリが多く、重めのメタル20号でステイ長めが効果的。マイカ15杯確保。',
       extracted: { catch: 15, minDepth: 40, maxDepth: 40, color: '青系' }
     },
     {
@@ -110,7 +110,7 @@ document.addEventListener('DOMContentLoaded', () => {
       date: '2026-05-28',
       author: '一美丸 (釣果速報)',
       url: 'https://ameblo.jp/ichimimaru/',
-      body: 'マイカメタル＆アジング出船。アジは尺オーバー連発で入れ乗り。イカは集魚灯点灯後にポツポツ。棚は30m前後。スッテはフルグローや赤緑に好反応。トップで19杯。まだイカの群れが薄いですがアタリは明確です。',
+      body: 'マイカメタル＆アジング出船。アジは尺オーバー連発で入れ乗り。イカは集魚灯点灯後にポツポツ。棚は30m前後. スッテはフルグローや赤緑に好反応。トップで19杯。まだイカの群れが薄いですがアタリは明確です。',
       extracted: { catch: 19, minDepth: 30, maxDepth: 30, color: 'グロー' }
     }
   ];
@@ -178,7 +178,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     if (age < 1.5 || age >= 28) {
       name = '新月';
-      tip = '🌟 闇夜チャンス！集魚灯が非常に効きやすく、イカが船の影に集まりやすい。浅い棚（15m〜25m）をメタルスッテの赤緑やピンクなど高アピール系で狙いましょう！';
+      tip = '🌟 闇夜チャンス！集魚灯が非常に効きやすく、イカが船 of 影に集まりやすい。浅い棚（15m〜25m）をメタルスッテの赤緑やピンクなど高アピール系で狙いましょう！';
     } else if (age >= 1.5 && age < 6.5) {
       name = '三日月';
       tip = '🌙 月明かりが弱く、イカの警戒心も低め。前半はボトムから探り、集魚灯が効き始めたら中層（20m〜30m）のレンジキープを意識してください。';
@@ -227,74 +227,66 @@ document.addEventListener('DOMContentLoaded', () => {
     const details = getMoonDetails(moon.age, moon.normalized);
     const tideName = getTideName(moon.age);
 
-    if (headerMoonPhaseEl) headerMoonPhaseEl.textContent = moon.age.toFixed(1);
-    if (headerTideNameEl) headerTideNameEl.textContent = tideName;
+    headerMoonPhaseEl.textContent = moon.age.toFixed(1);
+    headerTideNameEl.textContent = tideName;
 
-    if (detailMoonAgeEl) detailMoonAgeEl.textContent = moon.age.toFixed(1);
-    if (detailMoonNameEl) detailMoonNameEl.textContent = details.name;
-    if (detailMoonIlluminationEl) detailMoonIlluminationEl.textContent = details.illumination;
-    if (moonTackleTipEl) moonTackleTipEl.textContent = details.tip;
+    detailMoonAgeEl.textContent = moon.age.toFixed(1);
+    detailMoonNameEl.textContent = details.name;
+    detailMoonIlluminationEl.textContent = details.illumination;
+    moonTackleTipEl.textContent = details.tip;
 
     // Draw main moon shadow
     let shadowShift = 0;
-    if (moonShadowGraphic) {
-      if (moon.normalized <= 0.5) {
-        shadowShift = moon.normalized * 200;
-        moonShadowGraphic.style.transform = `translateX(${shadowShift}%)`;
-        moonShadowGraphic.style.left = '0';
-        moonShadowGraphic.style.right = 'auto';
-      } else {
-        shadowShift = (moon.normalized - 0.5) * 200;
-        moonShadowGraphic.style.transform = `translateX(${shadowShift - 100}%)`;
-        moonShadowGraphic.style.left = 'auto';
-        moonShadowGraphic.style.right = '0';
-      }
+    if (moon.normalized <= 0.5) {
+      shadowShift = moon.normalized * 200;
+      moonShadowGraphic.style.transform = `translateX(${shadowShift}%)`;
+      moonShadowGraphic.style.left = '0';
+      moonShadowGraphic.style.right = 'auto';
+    } else {
+      shadowShift = (moon.normalized - 0.5) * 200;
+      moonShadowGraphic.style.transform = `translateX(${shadowShift - 100}%)`;
+      moonShadowGraphic.style.left = 'auto';
+      moonShadowGraphic.style.right = '0';
     }
 
     // --- Generate 4 Days Forecast ---
-    if (moonForecastContainer) {
-      moonForecastContainer.innerHTML = '';
-      const dayOfWeekStr = ['日', '月', '火', '水', '木', '金', '土'];
-      
-      for (let d = 1; d <= 4; d++) {
-        const forecastDate = new Date(today.getTime() + d * 24 * 60 * 60 * 1000);
-        const m = forecastDate.getMonth() + 1;
-        const day = forecastDate.getDate();
-        const w = dayOfWeekStr[forecastDate.getDay()];
-        const label = `${m}/${day}(${w})`;
+    moonForecastContainer.innerHTML = '';
+    const dayOfWeekStr = ['日', '月', '火', '水', '木', '金', '土'];
+    
+    for (let d = 1; d <= 4; d++) {
+      const forecastDate = new Date(today.getTime() + d * 24 * 60 * 60 * 1000);
+      const m = forecastDate.getMonth() + 1;
+      const day = forecastDate.getDate();
+      const w = dayOfWeekStr[forecastDate.getDay()];
+      const label = `${m}/${day}(${w})`;
 
-        const fMoon = getMoonPhase(forecastDate);
-        const fDetails = getMoonDetails(fMoon.age, fMoon.normalized);
+      const fMoon = getMoonPhase(forecastDate);
+      const fDetails = getMoonDetails(fMoon.age, fMoon.normalized);
 
-        const fItem = document.createElement('div');
-        fItem.className = 'forecast-item';
-        fItem.innerHTML = `
-          <span class="forecast-date">${label}</span>
-          <span class="forecast-age">${fMoon.age.toFixed(1)}</span>
-          <span class="forecast-name">${fDetails.name}</span>
-          <span class="forecast-ill">光度 ${fDetails.illumination}%</span>
-        `;
-        moonForecastContainer.appendChild(fItem);
-      }
+      const fItem = document.createElement('div');
+      fItem.className = 'forecast-item';
+      fItem.innerHTML = `
+        <span class="forecast-date">${label}</span>
+        <span class="forecast-age">${fMoon.age.toFixed(1)}</span>
+        <span class="forecast-name">${fDetails.name}</span>
+        <span class="forecast-ill">光度 ${fDetails.illumination}%</span>
+      `;
+      moonForecastContainer.appendChild(fItem);
     }
   }
 
   // --- Tide Graph Painting with Weather Icons Overlaid ---
   function drawTideChart() {
-    if (!tideCanvas) return;
     const ctx = tideCanvas.getContext('2d');
-    if (!ctx) return;
     const container = tideCanvas.parentElement;
-    if (!container) return;
-    const width = container.clientWidth || 300;
+    const width = container.clientWidth;
     const height = 120;
     
-    const dpr = window.devicePixelRatio || 1;
-    tideCanvas.width = width * dpr;
-    tideCanvas.height = height * dpr;
+    tideCanvas.width = width * window.devicePixelRatio;
+    tideCanvas.height = height * window.devicePixelRatio;
     tideCanvas.style.width = width + 'px';
     tideCanvas.style.height = height + 'px';
-    ctx.scale(dpr, dpr);
+    ctx.scale(window.devicePixelRatio, window.devicePixelRatio);
 
     const points = [];
     const getTideY = (h) => {
@@ -396,31 +388,28 @@ document.addEventListener('DOMContentLoaded', () => {
     ctx.arc(targetX, getTideY(currentHour), 4, 0, Math.PI * 2);
     ctx.fill();
 
-    if (tideTimesList) {
-      tideTimesList.innerHTML = `
-        <div class="tide-time-box">
-          <span class="time-lbl">満潮</span>
-          <span class="time-val">04:30 (32cm)</span>
-        </div>
-        <div class="tide-time-box">
-          <span class="time-lbl">干潮</span>
-          <span class="time-val">10:45 (12cm)</span>
-        </div>
-        <div class="tide-time-box">
-          <span class="time-lbl">満潮</span>
-          <span class="time-val">16:30 (28cm)</span>
-        </div>
-        <div class="tide-time-box">
-          <span class="time-lbl">干潮</span>
-          <span class="time-val">22:45 (8cm)</span>
-        </div>
-      `;
-    }
+    tideTimesList.innerHTML = `
+      <div class="tide-time-box">
+        <span class="time-lbl">満潮</span>
+        <span class="time-val">04:30 (32cm)</span>
+      </div>
+      <div class="tide-time-box">
+        <span class="time-lbl">干潮</span>
+        <span class="time-val">10:45 (12cm)</span>
+      </div>
+      <div class="tide-time-box">
+        <span class="time-lbl">満潮</span>
+        <span class="time-val">16:30 (28cm)</span>
+      </div>
+      <div class="tide-time-box">
+        <span class="time-lbl">干潮</span>
+        <span class="time-val">22:45 (8cm)</span>
+      </div>
+    `;
   }
 
   // --- Render 5-Day Weather Forecast ---
   function renderWeatherForecast() {
-    if (!weatherForecastContainer) return;
     weatherForecastContainer.innerHTML = '';
     const today = new Date();
     const dayOfWeekStr = ['日', '月', '火', '水', '木', '金', '土'];
@@ -433,7 +422,6 @@ document.addEventListener('DOMContentLoaded', () => {
       const label = d === 0 ? `本日 ${m}/${day}(${w})` : `${m}/${day}(${w})`;
 
       const data = WEATHER_FORECAST[d];
-      if (!data) continue;
       const card = document.createElement('div');
       card.className = `weather-forecast-card ${data.rough ? 'rough-sea' : ''}`;
 
@@ -450,7 +438,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // --- 3-Day Grouped Timeline Analytics ---
   function updateTrendsTimeline(activeFeeds) {
-    if (!trendsTimelineContainer) return;
     trendsTimelineContainer.innerHTML = '';
     const today = new Date();
     
@@ -552,7 +539,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // --- Render Social Feeds ---
   function renderFeeds() {
-    if (!feedList) return;
     feedList.innerHTML = '';
     
     const filteredFeeds = SOCIAL_FEEDS.filter(feed => {
@@ -570,14 +556,14 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     if (filteredFeeds.length === 0) {
-      if (noFeedsMsg) noFeedsMsg.classList.remove('hidden');
+      noFeedsMsg.classList.remove('hidden');
       updateTrendsTimeline([]);
       return;
     }
-    if (noFeedsMsg) noFeedsMsg.classList.add('hidden');
+    noFeedsMsg.classList.add('hidden');
 
     filteredFeeds.forEach(feed => {
-      const li = document.createElement('div');
+      const li = document.createElement('li');
       let mediaLabel = '📝 Blog';
       let badgeClass = 'badge-blog';
       if (feed.media === 'twitter') {
@@ -611,47 +597,41 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   // --- Search & Filtering Event Handlers ---
-  if (feedSearch) {
-    feedSearch.addEventListener('input', (e) => {
-      searchQuery = e.target.value;
+  feedSearch.addEventListener('input', (e) => {
+    searchQuery = e.target.value;
+    renderFeeds();
+  });
+
+  mediaFilterButtons.forEach(btn => {
+    btn.addEventListener('click', () => {
+      mediaFilterButtons.forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      activeMediaFilter = btn.dataset.media;
       renderFeeds();
     });
-  }
-
-  if (mediaFilterButtons) {
-    mediaFilterButtons.forEach(btn => {
-      btn.addEventListener('click', () => {
-        mediaFilterButtons.forEach(b => b.classList.remove('active'));
-        btn.classList.add('active');
-        activeMediaFilter = btn.dataset.media;
-        renderFeeds();
-      });
-    });
-  }
+  });
 
   // --- Simulate "Syncing Data" ---
-  if (btnSyncFeed) {
-    btnSyncFeed.addEventListener('click', () => {
-      if (syncLoader) syncLoader.classList.remove('hidden');
+  btnSyncFeed.addEventListener('click', () => {
+    syncLoader.classList.remove('hidden');
+    
+    setTimeout(() => {
+      syncLoader.classList.add('hidden');
       
-      setTimeout(() => {
-        if (syncLoader) syncLoader.classList.add('hidden');
-        
-        const newSimulatedPost = {
-          id: Date.now(),
-          media: Math.random() > 0.5 ? 'twitter' : 'instagram',
-          date: new Date().toISOString().split('T')[0],
-          author: '一美丸 (釣果速報元)',
-          url: 'https://ameblo.jp/ichimimaru/',
-          body: '【速報】アカイカ好釣！棚20m〜25mの浅棚でヒット集中。小型メタルスッテ10号の赤緑、フルグローで数を伸ばしました！竿頭45杯と釣果急上昇！ #イカメタル #敦賀',
-          extracted: { catch: 45, minDepth: 20, maxDepth: 25, color: '赤緑' }
-        };
+      const newSimulatedPost = {
+        id: Date.now(),
+        media: Math.random() > 0.5 ? 'twitter' : 'instagram',
+        date: new Date().toISOString().split('T')[0],
+        author: '一美丸 (釣果速報元)',
+        url: 'https://ameblo.jp/ichimimaru/',
+        body: '【速報】アカイカ好釣！棚20m〜25mの浅棚でヒット集中。小型メタルスッテ10号の赤緑、フルグローで数を伸ばしました！竿頭45杯と釣果急上昇！ #イカメタル #敦賀',
+        extracted: { catch: 45, minDepth: 20, maxDepth: 25, color: '赤緑' }
+      };
 
-        SOCIAL_FEEDS.unshift(newSimulatedPost);
-        renderFeeds();
-      }, 1500);
-    });
-  }
+      SOCIAL_FEEDS.unshift(newSimulatedPost);
+      renderFeeds();
+    }, 1500);
+  });
 
   // --- Initial Activation ---
   updateMoonUI();
