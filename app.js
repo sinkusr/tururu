@@ -154,7 +154,74 @@ document.addEventListener('DOMContentLoaded', () => {
   // Trends Timeline element
   const trendsTimelineContainer = document.getElementById('trends-timeline-container');
 
-  // --- Accurate Moon Calculation (Julian Date calibrated)   function updateMoonUI() {
+  // --- Accurate Moon Calculation (Julian Date calibrated) ---
+  function getMoonPhase(date) {
+    const jd = (date.getTime() / 86400000) + 2440587.5;
+    const knownNewMoon = 2460290.35; 
+    const synodicMonth = 29.530588853;
+    
+    let age = (jd - knownNewMoon) % synodicMonth;
+    if (age < 0) age += synodicMonth;
+    
+    return {
+      age: Math.round(age * 10) / 10,
+      normalized: age / synodicMonth
+    };
+  }
+
+  function getMoonDetails(age, normPhase) {
+    let name = '若葉月';
+    let illumination = 0;
+    let tip = '';
+
+    illumination = Math.round((1 - Math.cos(normPhase * 2 * Math.PI)) * 50);
+
+    if (age < 1.5 || age >= 28) {
+      name = '新月';
+      tip = '🌟 闇夜チャンス！集魚灯が非常に効きやすく、イカが船の影に集まりやすい。浅い棚（15m〜25m）をメタルスッテの赤緑やピンクなど高アピール系で狙いましょう！';
+    } else if (age >= 1.5 && age < 6.5) {
+      name = '三日月';
+      tip = '🌙 月明かりが弱く、イカの警戒心も低め。前半はボトムから探り、集魚灯が効き始めたら中層（20m〜30m）のレンジキープを意識してください。';
+    } else if (age >= 6.5 && age < 9.5) {
+      name = '上弦の月';
+      tip = '🌓 月が少し明るくなります（現在：上弦の潮）。明るさに応じて棚が上下するため、まめなレンジサーチが必要です。オモリグとメタルスッテの両方を用意しましょう。';
+    } else if (age >= 9.5 && age < 13.5) {
+      name = '十日余りの月';
+      tip = '🌔 月明かりが強まり、イカがやや分散傾向に。船の影から外れた明暗の境界をオモリグ（20〜25号）のキャストで広く探るのが有効です。';
+    } else if (age >= 13.5 && age < 16.5) {
+      name = '満月';
+      tip = '🌕 月夜の定番パターン。イカが分散し棚が深くなりやすい（30m〜ボトム）。シルエットがはっきり出る「紫系」「黒系」「赤イエロー」のオモリグや、赤緑スッテが効きます。';
+    } else if (age >= 16.5 && age < 21.5) {
+      name = '十六夜月';
+      tip = '🌘 満月から欠けていく月。徐々に明かりが落ち着きますが、前半は月が高いため深場狙い。中盤以降に浅くなるチャンスがあります。';
+    } else if (age >= 21.5 && age < 24.5) {
+      name = '下弦の月';
+      tip = '🌗 深夜に月が昇るため、釣り開始時間帯（18時〜21時）は闇夜同様に好条件！集魚灯の点灯から早い時間帯での連発を狙いましょう。';
+    } else {
+      name = '有明の月';
+      tip = '🌒 月光が非常に弱く良好なイカメタルコンディション。グロー（夜光）系やケイムラ塗装のスッテ・エギでアピールするのが効果的です。';
+    }
+
+    return { name, illumination, tip };
+  }
+
+  function getTideName(age) {
+    const roundedAge = Math.floor(age);
+    if (roundedAge >= 0 && roundedAge <= 2) return '大潮';
+    if (roundedAge >= 3 && roundedAge <= 6) return '中潮';
+    if (roundedAge >= 7 && roundedAge <= 9) return '小潮';
+    if (roundedAge === 10) return '長潮';
+    if (roundedAge === 11) return '若潮';
+    if (roundedAge >= 12 && roundedAge <= 14) return '中潮';
+    if (roundedAge >= 15 && roundedAge <= 17) return '大潮';
+    if (roundedAge >= 18 && roundedAge <= 21) return '中潮';
+    if (roundedAge >= 22 && roundedAge <= 24) return '小潮';
+    if (roundedAge === 25) return '長潮';
+    if (roundedAge === 26) return '若潮';
+    return '中潮';
+  }
+
+  function updateMoonUI() {
     const today = new Date();
     const moon = getMoonPhase(today);
     const details = getMoonDetails(moon.age, moon.normalized);
