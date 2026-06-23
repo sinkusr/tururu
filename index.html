@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>敦賀イカメタル情報ナビ | Tsuruga Squid Metal Intel Dashboard</title>
+  <title>敦賀イカメタル情報ナビ v1.2.0 | Tsuruga Squid Metal Intel Dashboard</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&family=Noto+Sans+JP:wght@300;400;500;700&display=swap" rel="stylesheet">
@@ -12,7 +12,7 @@
 <body class="dark-theme">
   <header class="app-header">
     <div class="header-logo-section">
-      <div class="header-badge">TSURUGA</div>
+      <div class="header-badge">TSURUGA <span class="version-badge">v1.2.0</span></div>
       <h1>敦賀イカメタル情報ナビ <span>Squid Metal Intel Dashboard</span></h1>
     </div>
     <div class="header-stats">
@@ -77,26 +77,11 @@
 
         <div class="divider"></div>
 
-        <!-- Weather / Wind Widget -->
+        <!-- 5-Day Weather & Sea Condition Forecast -->
         <div class="weather-wind-widget">
-          <h3>気象情報・風波予測</h3>
-          <div class="weather-grid">
-            <div class="weather-cell">
-              <span class="cell-label">天気</span>
-              <span class="cell-val">晴れのち曇</span>
-            </div>
-            <div class="weather-cell">
-              <span class="cell-label">風速</span>
-              <span class="cell-val wind-warning">南西 3.2m/s</span>
-            </div>
-            <div class="weather-cell">
-              <span class="cell-label">波高</span>
-              <span class="cell-val">0.4m (穏やか)</span>
-            </div>
-            <div class="weather-cell">
-              <span class="cell-label">日の入り</span>
-              <span class="cell-val">19:15</span>
-            </div>
+          <h3>敦賀沖 5日間の気象・風波予報</h3>
+          <div class="weather-forecast-grid" id="weather-forecast-container">
+            <!-- Dynamically populated by JS -->
           </div>
         </div>
       </div>
@@ -159,7 +144,7 @@
   </main>
 
   <footer class="app-footer">
-    <p>&copy; 2026 Tsuruga Squid Metal Intel Dashboard. Pair programmed with Antigravity.</p>
+    <p>&copy; 2026 Tsuruga Squid Metal Intel Dashboard (v1.2.0). Pair programmed with Antigravity.</p>
   </footer>
 
   <script src="app.js"></script>

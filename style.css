@@ -86,7 +86,9 @@ body {
 }
 
 .header-badge {
-  display: inline-block;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
   background: rgba(0, 210, 255, 0.1);
   color: var(--primary);
   border: 1px solid rgba(0, 210, 255, 0.2);
@@ -96,6 +98,16 @@ body {
   border-radius: 4px;
   letter-spacing: 1px;
   margin-bottom: 0.25rem;
+  width: fit-content;
+}
+
+.version-badge {
+  background: rgba(255, 255, 255, 0.15);
+  color: white;
+  padding: 1px 4px;
+  border-radius: 3px;
+  font-size: 0.6rem;
+  font-weight: 400;
 }
 
 .header-stats {
@@ -269,7 +281,7 @@ body {
   text-align: center;
   display: flex;
   flex-direction: column;
-  gap: 0.2rem;
+  gap: 0.2;
 }
 
 .forecast-date {
@@ -342,35 +354,67 @@ body {
   font-weight: 600;
 }
 
-/* Weather grid */
-.weather-grid {
+/* 5-Day Weather Forecast Widget */
+.weather-forecast-grid {
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 0.75rem;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 0.4rem;
+  margin-top: 0.5rem;
 }
 
-.weather-cell {
-  background: rgba(255, 255, 255, 0.03);
+.weather-forecast-card {
+  background: rgba(255, 255, 255, 0.02);
   border: 1px solid rgba(255, 255, 255, 0.05);
-  padding: 0.75rem;
-  border-radius: 10px;
+  padding: 0.6rem 0.4rem;
+  border-radius: 8px;
+  text-align: center;
   display: flex;
   flex-direction: column;
+  gap: 0.3rem;
+  transition: transform 0.2s, border-color 0.2s;
 }
 
-.weather-cell .cell-label {
-  font-size: 0.7rem;
+.weather-forecast-card:hover {
+  transform: translateY(-1px);
+  border-color: rgba(255, 255, 255, 0.1);
+}
+
+.weather-forecast-card.rough-sea {
+  border-color: rgba(239, 68, 68, 0.3);
+  background: rgba(239, 68, 68, 0.01);
+}
+
+.weather-forecast-card .w-date {
+  font-size: 0.65rem;
   color: var(--text-secondary);
-  margin-bottom: 0.25rem;
+  font-weight: 500;
 }
 
-.weather-cell .cell-val {
-  font-size: 0.9rem;
+.weather-forecast-card .w-icon {
+  font-size: 1.2rem;
+  margin: 0.1rem 0;
+}
+
+.weather-forecast-card .w-cond {
+  font-size: 0.65rem;
   font-weight: 600;
+  color: var(--text-primary);
 }
 
-.wind-warning {
-  color: var(--warning);
+.weather-forecast-card .w-wind {
+  font-size: 0.6rem;
+  color: var(--text-secondary);
+  line-height: 1.25;
+}
+
+.weather-forecast-card .w-wave {
+  font-size: 0.65rem;
+  font-weight: 700;
+  color: var(--primary);
+}
+
+.weather-forecast-card.rough-sea .w-wave {
+  color: var(--danger);
 }
 
 /* Timeline Trend Styles (Grouped by 3 days) */
@@ -766,8 +810,26 @@ body {
     padding: 0.35rem;
   }
 
-  .weather-grid {
+  .weather-forecast-grid {
     grid-template-columns: 1fr;
+    gap: 0.4rem;
+  }
+
+  .weather-forecast-card {
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.6rem 0.8rem;
+    text-align: left;
+  }
+
+  .weather-forecast-card .w-icon {
+    font-size: 1rem;
+    margin: 0;
+  }
+
+  .weather-forecast-card .w-wind {
+    text-align: right;
   }
 
   .trends-timeline {
@@ -795,4 +857,3 @@ body {
     padding: 6px;
   }
 }
-

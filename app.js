@@ -72,7 +72,7 @@ document.addEventListener('DOMContentLoaded', () => {
       date: '2026-06-04',
       author: 'シーモンキー (釣果レポート)',
       url: 'https://seamonkey2011.net/',
-      body: '梅雨入り前の敦賀マイカ便。潮は少し緩んで 15号スッテで底が取れました。集魚灯点灯直後から25m付近でアタリがあり、終始パラパラと乗り続けました。ヒットスッテは赤緑とケイムラ。竿頭は34杯、他の方も平均15〜20杯前後とまずまず。',
+      body: '梅雨入り前の敦賀マイカ便。潮は少し緩んで15号スッテで底が取れました。集魚灯点灯直後から25m付近でアタリがあり、終始パラパラと乗り続けました。ヒットスッテは赤緑とケイムラ. 竿頭は34杯、他の方も平均15〜20杯前後とまずまず。',
       extracted: { catch: 34, minDepth: 25, maxDepth: 25, color: '赤緑' }
     },
     {
@@ -95,6 +95,15 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   ];
 
+  // 5-Day Weather Forecast mock database (Today and next 4 days)
+  const WEATHER_FORECAST = [
+    { icon: '☀️', cond: '晴のち曇', windDir: '南西', windSpd: '3.2m', wave: '0.4m', rough: false },
+    { icon: '☁️', cond: '曇り', windDir: '北東', windSpd: '2.5m', wave: '0.3m', rough: false },
+    { icon: '☔', cond: '雨のち曇', windDir: '北西', windSpd: '4.8m', wave: '0.8m', rough: true },
+    { icon: '☁️', cond: '曇のち晴', windDir: '南西', windSpd: '2.8m', wave: '0.3m', rough: false },
+    { icon: '☀️', cond: '快晴', windDir: '南', windSpd: '1.8m', wave: '0.2m', rough: false }
+  ];
+
   // --- State ---
   let activeMediaFilter = 'all';
   let searchQuery = '';
@@ -112,6 +121,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   const tideCanvas = document.getElementById('tide-canvas');
   const tideTimesList = document.getElementById('tide-times-list');
+  const weatherForecastContainer = document.getElementById('weather-forecast-container');
 
   // Social Feed elements
   const feedList = document.getElementById('feed-list');
@@ -148,7 +158,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     if (age < 1.5 || age >= 28) {
       name = '新月';
-      tip = '🌟 闇夜チャンス！集魚灯が非常に効きやすく、イカが船の影に集まりやすい。浅い棚（15m〜25m）をメタルスッテの赤緑やピンクなど高アピール系で狙いましょう！';
+      tip = '🌟 闇夜チャンス！集魚灯が非常に効きやすく、イカが船 of 影に集まりやすい。浅い棚（15m〜25m）をメタルスッテの赤緑やピンクなど高アピール系で狙いましょう！';
     } else if (age >= 1.5 && age < 6.5) {
       name = '三日月';
       tip = '🌙 月明かりが弱く、イカの警戒心も低め。前半はボトムから探り、集魚灯が効き始めたら中層（20m〜30m）のレンジキープを意識してください。';
@@ -258,7 +268,6 @@ document.addEventListener('DOMContentLoaded', () => {
     tideCanvas.style.height = height + 'px';
     ctx.scale(window.devicePixelRatio, window.devicePixelRatio);
 
-    // Dynamic points calculation
     const points = [];
     const getTideY = (h) => {
       return 60 + 25 * Math.sin((h - 1.5) * (Math.PI / 6)) + 10 * Math.sin(h * (Math.PI / 3));
@@ -308,7 +317,6 @@ document.addEventListener('DOMContentLoaded', () => {
     ctx.fill();
 
     // --- Weather (天候・風速) Timeline Overlay ---
-    // Overlay hourly weather trends directly onto the tide chart grid
     const weatherTimeline = [
       { hour: 3, icon: '☀️', text: '晴 南西2m 波0.3m', yOffset: 20 },
       { hour: 9, icon: '☀️', text: '晴 南西3m 波0.3m', yOffset: 20 },
@@ -316,17 +324,14 @@ document.addEventListener('DOMContentLoaded', () => {
       { hour: 21, icon: '☁️', text: '曇 南西4m 波0.4m', yOffset: 20 }
     ];
 
-
     weatherTimeline.forEach(wPoint => {
       const wx = (wPoint.hour / 24) * width;
       
-      // Draw weather icon emoji
       ctx.fillStyle = '#ffffff';
       ctx.font = '12px Outfit';
       ctx.textAlign = 'center';
       ctx.fillText(wPoint.icon, wx, wPoint.yOffset);
 
-      // Draw wind speed/direction below icon
       let labelText = wPoint.text;
       if (width < 450) {
         labelText = labelText.replace('南西', '').replace('波', '');
@@ -335,8 +340,6 @@ document.addEventListener('DOMContentLoaded', () => {
       ctx.font = '8px Noto Sans JP';
       ctx.fillText(labelText, wx, wPoint.yOffset + 10);
 
-
-      // Draw a subtle vertical connector line from weather to tide line
       const ty = getTideY(wPoint.hour);
       ctx.strokeStyle = 'rgba(255, 255, 255, 0.08)';
       ctx.lineWidth = 1;
@@ -345,7 +348,7 @@ document.addEventListener('DOMContentLoaded', () => {
       ctx.lineTo(wx, ty);
       ctx.stroke();
     });
-    ctx.textAlign = 'left'; // Reset
+    ctx.textAlign = 'left';
 
     // Draw current time line indicator
     const currentHour = new Date().getHours() + (new Date().getMinutes() / 60);
@@ -365,7 +368,6 @@ document.addEventListener('DOMContentLoaded', () => {
     ctx.arc(targetX, getTideY(currentHour), 4, 0, Math.PI * 2);
     ctx.fill();
 
-    // Populate Tide Times List
     tideTimesList.innerHTML = `
       <div class="tide-time-box">
         <span class="time-lbl">満潮</span>
@@ -384,6 +386,34 @@ document.addEventListener('DOMContentLoaded', () => {
         <span class="time-val">22:45 (8cm)</span>
       </div>
     `;
+  }
+
+  // --- Render 5-Day Weather Forecast ---
+  function renderWeatherForecast() {
+    weatherForecastContainer.innerHTML = '';
+    const today = new Date();
+    const dayOfWeekStr = ['日', '月', '火', '水', '木', '金', '土'];
+
+    for (let d = 0; d < 5; d++) {
+      const forecastDate = new Date(today.getTime() + d * 24 * 60 * 60 * 1000);
+      const m = forecastDate.getMonth() + 1;
+      const day = forecastDate.getDate();
+      const w = dayOfWeekStr[forecastDate.getDay()];
+      const label = d === 0 ? `本日 ${m}/${day}(${w})` : `${m}/${day}(${w})`;
+
+      const data = WEATHER_FORECAST[d];
+      const card = document.createElement('div');
+      card.className = `weather-forecast-card ${data.rough ? 'rough-sea' : ''}`;
+
+      card.innerHTML = `
+        <span class="w-date">${label}</span>
+        <span class="w-icon">${data.icon}</span>
+        <span class="w-cond">${data.cond}</span>
+        <span class="w-wind">${data.windDir}<br>${data.windSpd}</span>
+        <span class="w-wave">${data.wave}</span>
+      `;
+      weatherForecastContainer.appendChild(card);
+    }
   }
 
   // --- 3-Day Grouped Timeline Analytics ---
@@ -586,7 +616,10 @@ document.addEventListener('DOMContentLoaded', () => {
   // --- Initial Activation ---
   updateMoonUI();
   drawTideChart();
+  renderWeatherForecast();
   renderFeeds();
 
-  window.addEventListener('resize', drawTideChart);
+  window.addEventListener('resize', () => {
+    drawTideChart();
+  });
 });
