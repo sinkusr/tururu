@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>敦賀イカメタル情報ナビ v1.2.2 | Tsuruga Squid Metal Intel Dashboard</title>
+  <title>敦賀イカメタル情報ナビ v1.5.2 | Tsuruga Squid Metal Intel Dashboard</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&family=Noto+Sans+JP:wght@300;400;500;700&display=swap" rel="stylesheet">
@@ -12,7 +12,7 @@
 <body class="dark-theme">
   <header class="app-header">
     <div class="header-logo-section">
-      <div class="header-badge">TSURUGA <span class="version-badge">v1.2.2</span></div>
+      <div class="header-badge">TSURUGA <span class="version-badge">v1.5.2</span></div>
       <h1>敦賀イカメタル情報ナビ <span>Squid Metal Intel Dashboard</span></h1>
     </div>
     <div class="header-stats">
@@ -84,6 +84,43 @@
             <!-- Dynamically populated by JS -->
           </div>
         </div>
+
+        <div class="divider"></div>
+
+        <!-- Real-time External Search Navigation -->
+        <div class="search-nav-widget">
+          <h3>敦賀イカメタル 外部リアルタイム検索</h3>
+          <div class="search-nav-links">
+            <a href="https://search.yahoo.co.jp/realtime/search?p=%E6%95%A6%E8%B3%80+%E3%82%A4%E3%82%AB%E3%83%A1%E3%82%BF%E3%83%AB" target="_blank" rel="noopener noreferrer" class="search-nav-item">
+              <span class="search-nav-icon">🔍</span>
+              <div class="search-nav-text">
+                <span class="search-nav-title">Yahoo!リアルタイム検索</span>
+                <span class="search-nav-desc">「敦賀 イカメタル」の最新つぶやき・SNS実況を検索</span>
+              </div>
+            </a>
+            <a href="https://www.google.com/search?q=%E6%95%A6%E8%B3%80+%E3%82%A4%E3%82%AB%E3%83%A1%E3%82%BF%E3%83%AB+%E9%87%A3%E6%9E%9C" target="_blank" rel="noopener noreferrer" class="search-nav-item">
+              <span class="search-nav-icon">📈</span>
+              <div class="search-nav-text">
+                <span class="search-nav-title">Google 釣果速報検索</span>
+                <span class="search-nav-desc">敦賀周辺の最新イカメタル釣果報告・ブログを検索</span>
+              </div>
+            </a>
+            <a href="https://weather.yahoo.co.jp/weather/jp/18/5510/18202.html" target="_blank" rel="noopener noreferrer" class="search-nav-item">
+              <span class="search-nav-icon">⚓</span>
+              <div class="search-nav-text">
+                <span class="search-nav-title">Yahoo!天気 (敦賀市)</span>
+                <span class="search-nav-desc">敦賀港周辺のピンポイント気象・雨雲レーダー</span>
+              </div>
+            </a>
+            <a href="https://www.windy.com/35.750/136.050?35.422,136.050,9" target="_blank" rel="noopener noreferrer" class="search-nav-item">
+              <span class="search-nav-icon">💨</span>
+              <div class="search-nav-text">
+                <span class="search-nav-title">Windy 敦賀沖風波予報</span>
+                <span class="search-nav-desc">敦賀沖合のリアルタイムな風向き・風速・波浪マップ</span>
+              </div>
+            </a>
+          </div>
+        </div>
       </div>
     </section>
 
@@ -122,13 +159,7 @@
 
           <!-- Search and Media filter -->
           <div class="feed-controls">
-            <input type="text" id="feed-search" placeholder="🔍 キーワード検索 (船名、オモリグ、カラー、棚)...">
-            <div class="media-filter-bar">
-              <button class="m-filter-btn active" data-media="all">すべて</button>
-              <button class="m-filter-btn" data-media="blog">📝 ブログ</button>
-              <button class="m-filter-btn" data-media="twitter">🐦 X (Twitter)</button>
-              <button class="m-filter-btn" data-media="instagram">📸 Instagram</button>
-            </div>
+            <input type="text" id="feed-search" placeholder="🔍 キーワード検索 (オモリグ、カラー、棚、船宿名)...">
           </div>
 
           <!-- List of gathered posts -->
@@ -144,9 +175,9 @@
   </main>
 
   <footer class="app-footer">
-    <p>&copy; 2026 Tsuruga Squid Metal Intel Dashboard (v1.2.2). Pair programmed with Antigravity.</p>
+    <p>&copy; 2026 Tsuruga Squid Metal Intel Dashboard (v1.5.2). Pair programmed with Antigravity.</p>
   </footer>
 
-  <script src="app.js?v=1.2.2"></script>
+  <script src="app.js?v=1.5.2"></script>
 </body>
 </html>

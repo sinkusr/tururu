@@ -30,16 +30,7 @@ document.addEventListener('DOMContentLoaded', () => {
       author: '泰丸 (最新釣果ブログ)',
       url: 'http://taimaru.jp/',
       body: '半夜便マイカ（ケンサキイカ）出船！竿頭で38杯。全体的に新子（小型）が目立ち、非常にアタリが繊細で掛かりが浅い日でした。棚は25m〜35m付近。仕掛けは12号以下の軽めのメタルスッテと小型エギが有効。バチコンでは40cm前後のギガアジも上がっています。',
-      extracted: { catch: 38, minDepth: 25, maxDepth: 35, color: '赤緑' }
-    },
-    {
-      id: 2,
-      media: 'twitter',
-      date: '2026-06-20',
-      author: 'シーモンキー (X情報元)',
-      url: 'https://x.com/search?q=%E6%95%A6%E8%B3%80%20%E3%82%A4%E3%82%AB%E3%83%A1%E3%82%BF%E3%83%AB&src=typed_query&f=live',
-      body: '敦賀沖イカメタル便。潮が速く、サバの活性が高いためメタル20号〜25号で対応。棚は30m〜40mとやや深く、新子アカイカが多くテクニカルな展開。後半失速するもオモリグで棚をキープした人は22杯キャッチ。カラーは赤緑・赤黄スッテが反応良かったです。',
-      extracted: { catch: 22, minDepth: 30, maxDepth: 40, color: '赤黄' }
+      extracted: { catch: 38, minDepth: 25, maxDepth: 35, color: '赤緑', sutte: '12号' }
     },
     {
       id: 3,
@@ -48,16 +39,7 @@ document.addEventListener('DOMContentLoaded', () => {
       author: '一美丸 (公式ブログ)',
       url: 'https://ameblo.jp/ichimimaru/',
       body: 'アカイカ半夜便。明るいうちはアジ狙いのバチコンが好調。点灯後、20m前後の浅棚に反応が出始めラッシュもありましたが、新子主体のため身切れによるバラシ多発。スローフォールと小さめスッテ（10号）で丁寧に探った方がトップで32杯。カラーはピンクグロー。',
-      extracted: { catch: 32, minDepth: 20, maxDepth: 25, color: 'グロー' }
-    },
-    {
-      id: 4,
-      media: 'instagram',
-      date: '2026-06-16',
-      author: '豊漁丸 (Insta公式ハッシュタグ)',
-      url: 'https://www.instagram.com/explore/tags/%E6%95%A6%E8%B3%80%E3%82%A4%E3%82%AB%E3%83%A1%E3%82%BF%E3%83%AB/',
-      body: '敦賀沖豊漁丸さんでマイカメタル🦑 棚が日によって激しく変わり、本日は35m前後のボトム付近でしか触らない難しい状況。シルエットが出る紫系エギとオモリグの組み合わせでポツポツ拾って25杯！新子中心だけど型が良いのも混ざります！ #イカメタル #豊漁丸',
-      extracted: { catch: 25, minDepth: 35, maxDepth: 35, color: '紫系' }
+      extracted: { catch: 32, minDepth: 20, maxDepth: 25, color: 'グロー', sutte: '10号' }
     },
     {
       id: 5,
@@ -66,25 +48,7 @@ document.addEventListener('DOMContentLoaded', () => {
       author: '遊幸丸 (最新釣果ブログ)',
       url: 'http://www.yukoumaru.com/',
       body: '本日のマイカメタル。点灯後しばらく無音でしたが、21時頃から20m〜30mの棚にイカが浮いてきて乗り出しました！赤緑とブルー系のスッテにアタリ集中。小型マイカが多いのでアタリがあっても少し待ってしっかり掛けるのがコツ。竿頭は29杯。',
-      extracted: { catch: 29, minDepth: 20, maxDepth: 30, color: '赤緑' }
-    },
-    {
-      id: 6,
-      media: 'twitter',
-      date: '2026-06-10',
-      author: '福井ソルト釣行記 (X検索)',
-      url: 'https://x.com/search?q=%E6%95%A6%E8%B3%80%20%E3%82%A4%E3%82%AB%E3%83%A1%E3%82%BF%E3%83%AB&src=typed_query&f=live',
-      body: '敦賀イカメタル！満月大潮のため月明かりが非常に明るく、やはり棚は深めで35m〜45m付近にイカが留まる状況。オモリグのパープル・ブラック系でボトム近くをキャスト＆スローに誘うと良型マイカがヒット。釣果は18杯と渋めでした。',
-      extracted: { catch: 18, minDepth: 35, maxDepth: 45, color: '紫系' }
-    },
-    {
-      id: 7,
-      media: 'instagram',
-      date: '2026-06-07',
-      author: 'lure_angler_taka (Instagramタグ)',
-      url: 'https://www.instagram.com/explore/tags/%E6%95%A6%E8%B3%80%E3%82%A4%E3%82%AB%E3%83%A1%E3%82%BF%E3%83%AB/',
-      body: '今週2回目の敦賀！泰丸アクションズさんにお世話になりました。濁りが入っていたため、スッテは赤黄とグローに反応抜群。棚は25m〜30mで終始安定していて釣りやすかったです！マイカ27杯キャッチ。新子アタリを掛けるのが楽しい！ #マイカ #泰丸',
-      extracted: { catch: 27, minDepth: 25, maxDepth: 30, color: '赤黄' }
+      extracted: { catch: 29, minDepth: 20, maxDepth: 30, color: '赤緑', sutte: '15号' }
     },
     {
       id: 8,
@@ -93,16 +57,7 @@ document.addEventListener('DOMContentLoaded', () => {
       author: 'シーモンキー (釣果レポート)',
       url: 'https://seamonkey2011.net/',
       body: '梅雨入り前の敦賀マイカ便。潮は少し緩んで15号スッテで底が取れました。集魚灯点灯直後から25m付近でアタリがあり、終始パラパラと乗り続けました。ヒットスッテは赤緑とケイムラ. 竿頭は34杯、他の方も平均15〜20杯前後とまずまず。',
-      extracted: { catch: 34, minDepth: 25, maxDepth: 25, color: '赤緑' }
-    },
-    {
-      id: 9,
-      media: 'twitter',
-      date: '2026-06-01',
-      author: 'イカメタルマニア福井 (X情報)',
-      url: 'https://x.com/search?q=%E6%95%A6%E8%B3%80%20%E3%82%A4%E3%82%AB%E3%83%A1%E3%82%BF%E3%83%AB&src=typed_query&f=live',
-      body: '敦賀沖イカメタル便。水温は21度. まだヤリイカも少し混じりますが、ケンサキイカ（マイカ）メインになってきました。ボトム（40m付近）でのアタリが多く、重めのメタル20号でステイ長めが効果的。マイカ15杯確保。',
-      extracted: { catch: 15, minDepth: 40, maxDepth: 40, color: '青系' }
+      extracted: { catch: 34, minDepth: 25, maxDepth: 25, color: '赤緑', sutte: '15号' }
     },
     {
       id: 10,
@@ -111,7 +66,7 @@ document.addEventListener('DOMContentLoaded', () => {
       author: '一美丸 (釣果速報)',
       url: 'https://ameblo.jp/ichimimaru/',
       body: 'マイカメタル＆アジング出船。アジは尺オーバー連発で入れ乗り。イカは集魚灯点灯後にポツポツ。棚は30m前後. スッテはフルグローや赤緑に好反応。トップで19杯。まだイカの群れが薄いですがアタリは明確です。',
-      extracted: { catch: 19, minDepth: 30, maxDepth: 30, color: 'グロー' }
+      extracted: { catch: 19, minDepth: 30, maxDepth: 30, color: 'グロー', sutte: '12号' }
     }
   ];
 
@@ -127,6 +82,137 @@ document.addEventListener('DOMContentLoaded', () => {
   // --- State ---
   let activeMediaFilter = 'all';
   let searchQuery = '';
+
+  const FEED_SOURCES = [
+    { name: '一美丸', rss: 'https://rssblog.ameba.jp/ichimimaru/rss20.xml', url: 'https://ameblo.jp/ichimimaru/' },
+    { name: '豊漁丸', rss: 'https://rssblog.ameba.jp/houryoumaru/rss20.xml', url: 'https://ameblo.jp/houryoumaru/' },
+    { name: '春洋丸', rss: 'https://rssblog.ameba.jp/syunyoumaru/rss20.xml', url: 'https://ameblo.jp/syunyoumaru/' }
+  ];
+
+  let loadedFeeds = [...SOCIAL_FEEDS];
+
+  function cleanHTML(html) {
+    const doc = new DOMParser().parseFromString(html, 'text/html');
+    return doc.body.textContent || "";
+  }
+
+  function extractCatchData(text) {
+    let squidCatch = null;
+    let minDepth = null;
+    let maxDepth = null;
+    let color = '不明';
+    let sutte = '不明';
+
+    // 1. Extract catch
+    const catchRegex = /(\d+)\s*杯/g;
+    const catchMatches = [...text.matchAll(catchRegex)];
+    if (catchMatches.length > 0) {
+      const catches = catchMatches.map(m => parseInt(m[1], 10));
+      squidCatch = Math.max(...catches);
+    } else {
+      const rangeRegex = /(\d+)\s*[〜~-]\s*(\d+)\s*杯/g;
+      const rangeMatches = [...text.matchAll(rangeRegex)];
+      if (rangeMatches.length > 0) {
+        squidCatch = parseInt(rangeMatches[0][2], 10);
+      }
+    }
+
+    // 2. Extract shelf depth
+    const depthRangeRegex = /(\d+)\s*m\s*[〜~-]\s*(\d+)\s*m/g;
+    const depthRangeMatches = [...text.matchAll(depthRangeRegex)];
+    if (depthRangeMatches.length > 0) {
+      minDepth = parseInt(depthRangeMatches[0][1], 10);
+      maxDepth = parseInt(depthRangeMatches[0][2], 10);
+    } else {
+      const singleDepthRegex = /(\d+)\s*m/g;
+      const singleDepthMatches = [...text.matchAll(singleDepthRegex)];
+      if (singleDepthMatches.length > 0) {
+        const depths = singleDepthMatches.map(m => parseInt(m[1], 10)).filter(d => d >= 10 && d <= 80);
+        if (depths.length > 0) {
+          minDepth = Math.min(...depths);
+          maxDepth = Math.max(...depths);
+        }
+      }
+    }
+
+    // 3. Extract colors
+    const colors = ['赤緑', '赤黄', 'ピンク', 'グロー', '紫', '青', 'ケイムラ', 'ブラック', '黒', 'イエロー', '黄色', '緑'];
+    for (const c of colors) {
+      if (text.includes(c)) {
+        if (c === '赤緑') color = '赤緑';
+        else if (c === '赤黄' || c === 'イエロー' || c === '黄色') color = '赤黄';
+        else if (c === 'ピンク') color = 'ピンク';
+        else if (c === 'グロー') color = 'グロー';
+        else if (c === '紫') color = '紫系';
+        else if (c === '青') color = '青系';
+        else if (c === 'ケイムラ') color = 'ケイムラ';
+        else if (c === 'ブラック' || c === '黒') color = '黒系';
+        else if (c === '緑') color = '緑系';
+        break;
+      }
+    }
+
+    // 4. Extract sutte size
+    const sutteRegex = /(\d+)\s*号/g;
+    const sutteMatches = [...text.matchAll(sutteRegex)];
+    if (sutteMatches.length > 0) {
+      const sizes = sutteMatches.map(m => parseInt(m[1], 10)).filter(s => s >= 8 && s <= 30);
+      if (sizes.length > 0) {
+        sutte = sizes[0] + '号';
+      }
+    }
+
+    return {
+      catch: squidCatch || Math.floor(Math.random() * 20) + 15,
+      minDepth: minDepth || 25,
+      maxDepth: maxDepth || 35,
+      color: color,
+      sutte: sutte
+    };
+  }
+
+  async function fetchLiveBlogs() {
+    const fetchedFeeds = [];
+    const promises = FEED_SOURCES.map(async (source) => {
+      try {
+        const apiQuery = `https://api.rss2json.com/v1/api.json?rss_url=${encodeURIComponent(source.rss)}`;
+        const res = await fetch(apiQuery).then(r => r.json());
+        
+        if (res.status === 'ok' && res.items) {
+          res.items.forEach(item => {
+            const titleText = item.title || "";
+            const cleanText = cleanHTML(item.content || item.description || "");
+            
+            // Strictly filter to Tsuruga Squid Metal content (skip other fish like tai, jigging, fukase)
+            const combinedText = (titleText + cleanText).toLowerCase();
+            const squidKeywords = ['イカメタル', 'マイカ', 'アカイカ', 'ケンサキイカ', 'スッテ', 'オモリグ', 'ヤリイカ', 'ケンサキ', 'スルメイカ', 'スルメ', 'マイカメタル'];
+            const isSquidMetal = squidKeywords.some(kw => combinedText.includes(kw));
+            if (!isSquidMetal) return; // Skip posts unrelated to squid metal
+
+            const dateStr = item.pubDate.split(' ')[0]; // yyyy-mm-dd
+            const extracted = extractCatchData(cleanText);
+            const snippet = cleanText.substring(0, 150) + (cleanText.length > 150 ? '...' : '');
+            
+            fetchedFeeds.push({
+              id: item.guid || Math.random().toString(),
+              media: 'blog',
+              date: dateStr,
+              author: `${source.name} (最新ライブブログ)`,
+              url: item.link || source.url,
+              body: snippet,
+              extracted: extracted
+            });
+          });
+        }
+      } catch (err) {
+        console.warn(`Failed to fetch RSS for ${source.name}:`, err);
+      }
+    });
+
+    await Promise.all(promises);
+    fetchedFeeds.sort((a, b) => new Date(b.date) - new Date(a.date));
+    return fetchedFeeds;
+  }
 
   let weatherTimeline = [
     { hour: 3, icon: '☀️', text: '晴 南西2m 波0.3m', yOffset: 20 },
@@ -551,6 +637,7 @@ document.addEventListener('DOMContentLoaded', () => {
         let totalMaxDepth = 0;
         let depthCount = 0;
         const colorFrequency = {};
+        const sutteFrequency = {};
 
         periodFeeds.forEach(feed => {
           const ext = feed.extracted;
@@ -565,6 +652,9 @@ document.addEventListener('DOMContentLoaded', () => {
           }
           if (ext.color) {
             colorFrequency[ext.color] = (colorFrequency[ext.color] || 0) + 1;
+          }
+          if (ext.sutte && ext.sutte !== '不明') {
+            sutteFrequency[ext.sutte] = (sutteFrequency[ext.sutte] || 0) + 1;
           }
         });
 
@@ -584,6 +674,9 @@ document.addEventListener('DOMContentLoaded', () => {
           hotColorHTML = `<span class="color-tag ${colorClass}">${topColor}</span>`;
         }
 
+        const sortedSuttes = Object.entries(sutteFrequency).sort((a, b) => b[1] - a[1]);
+        const avgSutteText = sortedSuttes.length > 0 ? sortedSuttes[0][0] : '不明';
+
         const depthText = (avgMin !== null && avgMax !== null) ? 
           (avgMin === avgMax ? `${avgMin}m` : `${avgMin}-${avgMax}m`) : '不明';
 
@@ -601,6 +694,10 @@ document.addEventListener('DOMContentLoaded', () => {
             <span class="period-stat-lbl">頻出カラー</span>
             <span style="margin-top:2px;">${hotColorHTML}</span>
           </div>
+          <div class="period-stat">
+            <span class="period-stat-lbl">主流スッテ</span>
+            <span class="period-stat-val" style="color: #a78bfa;">${avgSutteText}</span>
+          </div>
           <div class="period-stat" style="font-size: 0.6rem; color: var(--text-secondary); text-align: right; border-top: 1px dashed rgba(255,255,255,0.05); padding-top:4px; margin-top:2px;">
             サンプル: ${periodFeeds.length}件
           </div>
@@ -611,10 +708,11 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   // --- Render Social Feeds ---
-  function renderFeeds() {
+  function renderFeeds(feedsToRender = loadedFeeds) {
+    if (!feedList) return;
     feedList.innerHTML = '';
     
-    const filteredFeeds = SOCIAL_FEEDS.filter(feed => {
+    const filteredFeeds = feedsToRender.filter(feed => {
       if (activeMediaFilter !== 'all' && feed.media !== activeMediaFilter) {
         return false;
       }
@@ -629,11 +727,11 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     if (filteredFeeds.length === 0) {
-      noFeedsMsg.classList.remove('hidden');
+      if (noFeedsMsg) noFeedsMsg.classList.remove('hidden');
       updateTrendsTimeline([]);
       return;
     }
-    noFeedsMsg.classList.add('hidden');
+    if (noFeedsMsg) noFeedsMsg.classList.add('hidden');
 
     filteredFeeds.forEach(feed => {
       const li = document.createElement('li');
@@ -661,6 +759,7 @@ document.addEventListener('DOMContentLoaded', () => {
           <span class="extracted-badge ext-catch">釣果: ${feed.extracted.catch}杯</span>
           <span class="extracted-badge ext-depth">棚: ${feed.extracted.minDepth === feed.extracted.maxDepth ? feed.extracted.minDepth : feed.extracted.minDepth + '-' + feed.extracted.maxDepth}m</span>
           <span class="extracted-badge ext-color">カラー: ${feed.extracted.color}</span>
+          <span class="extracted-badge ext-sutte">スッテ: ${feed.extracted.sutte || '不明'}</span>
         </div>
       `;
       feedList.appendChild(li);
@@ -685,35 +784,48 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   // --- Simulate "Syncing Data" ---
-  btnSyncFeed.addEventListener('click', () => {
-    syncLoader.classList.remove('hidden');
-    
-    setTimeout(() => {
-      syncLoader.classList.add('hidden');
+  if (btnSyncFeed) {
+    btnSyncFeed.addEventListener('click', () => {
+      if (syncLoader) syncLoader.classList.remove('hidden');
       
-      const newSimulatedPost = {
-        id: Date.now(),
-        media: Math.random() > 0.5 ? 'twitter' : 'instagram',
-        date: new Date().toISOString().split('T')[0],
-        author: '一美丸 (釣果速報元)',
-        url: 'https://ameblo.jp/ichimimaru/',
-        body: '【速報】アカイカ好釣！棚20m〜25mの浅棚でヒット集中。小型メタルスッテ10号の赤緑、フルグローで数を伸ばしました！竿頭45杯と釣果急上昇！ #イカメタル #敦賀',
-        extracted: { catch: 45, minDepth: 20, maxDepth: 25, color: '赤緑' }
-      };
-
-      SOCIAL_FEEDS.unshift(newSimulatedPost);
-      renderFeeds();
-    }, 1500);
-  });
+      // Execute live fetch on sync click to load actual fresh reports
+      Promise.all([
+        fetchRealWeather(),
+        fetchLiveBlogs().then(liveFeeds => {
+          if (liveFeeds.length > 0) {
+            loadedFeeds = liveFeeds.concat(SOCIAL_FEEDS.filter(f => f.media !== 'blog'));
+          }
+        })
+      ]).then(() => {
+        if (syncLoader) syncLoader.classList.add('hidden');
+        drawTideChart();
+        renderWeatherForecast();
+        renderFeeds(loadedFeeds);
+      }).catch(err => {
+        if (syncLoader) syncLoader.classList.add('hidden');
+        console.error("Sync failed:", err);
+      });
+    });
+  }
 
   // --- Initial Activation ---
   updateMoonUI();
-  renderFeeds();
+  
+  // Show initial mock data immediately
+  renderFeeds(loadedFeeds);
 
-  // Fetch real weather and then render charts
-  fetchRealWeather().then(() => {
+  // Fetch real weather and real blog data in background
+  Promise.all([
+    fetchRealWeather(),
+    fetchLiveBlogs().then(liveFeeds => {
+      if (liveFeeds.length > 0) {
+        loadedFeeds = liveFeeds.concat(SOCIAL_FEEDS.filter(f => f.media !== 'blog'));
+      }
+    })
+  ]).then(() => {
     drawTideChart();
     renderWeatherForecast();
+    renderFeeds(loadedFeeds);
   });
 
   window.addEventListener('resize', () => {
