@@ -245,7 +245,7 @@ document.addEventListener('DOMContentLoaded', () => {
       const lon = 136.05;
       
       const weatherUrl = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&daily=weather_code,wind_speed_10m_max,wind_direction_10m_dominant&hourly=weather_code,wind_speed_10m,wind_direction_10m&wind_speed_unit=ms&timezone=Asia%2FTokyo`;
-      const marineUrl = `https://marine-api.open-meteo.com/v1/marine?latitude=${lat}&longitude=${lon}&daily=wave_height_max&hourly=wave_height&timezone=Asia%2FTokyo`;
+      const marineUrl = `https://marine-api.open-meteo.com/v1/marine?latitude=${lat}&longitude=${lon}&daily=wave_height_max&hourly=wave_height,sea_surface_temperature&timezone=Asia%2FTokyo`;
       
       const [weatherRes, marineRes] = await Promise.all([
         fetch(weatherUrl).then(r => r.json()),
@@ -286,6 +286,18 @@ document.addEventListener('DOMContentLoaded', () => {
           
           return { hour: h, icon, text, yOffset: 20 };
         });
+      }
+
+      // Update sea temperature dynamically if available
+      if (marineRes.hourly && marineRes.hourly.sea_surface_temperature) {
+        const currentHourIndex = new Date().getHours();
+        const seaTemp = marineRes.hourly.sea_surface_temperature[currentHourIndex];
+        if (seaTemp !== undefined && seaTemp !== null) {
+          const seaTempEl = document.getElementById('header-sea-temp');
+          if (seaTempEl) {
+            seaTempEl.textContent = `${seaTemp.toFixed(1)}℃`;
+          }
+        }
       }
     } catch (err) {
       console.warn("Failed to fetch live weather from Open-Meteo, using fallback mock data.", err);

@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>更新履歴 | 敦賀イカメタル情報ナビ</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&family=Noto+Sans+JP:wght@300;400;500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <style>
+    .changelog-container {
+      max-width: 800px;
+      margin: 2rem auto;
+      padding: 0 1rem;
+      flex: 1;
+    }
+    .back-link-wrapper {
+      margin-bottom: 1.5rem;
+    }
+    .back-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      color: var(--primary);
+      text-decoration: none;
+      font-size: 0.9rem;
+      font-weight: 500;
+      transition: opacity 0.2s ease;
+    }
+    .back-btn:hover {
+      opacity: 0.8;
+    }
+    .changelog-card {
+      background: var(--panel-bg);
+      backdrop-filter: blur(10px);
+      border: 1px solid var(--border-color);
+      border-radius: 12px;
+      padding: 2rem;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+    }
+    .changelog-title {
+      font-size: 1.8rem;
+      font-weight: 700;
+      margin-bottom: 2rem;
+      background: var(--accent-gradient);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      border-bottom: 1px solid var(--border-color);
+      padding-bottom: 0.75rem;
+    }
+    .timeline {
+      position: relative;
+      padding-left: 2rem;
+    }
+    .timeline::before {
+      content: '';
+      position: absolute;
+      left: 7px;
+      top: 0.5rem;
+      bottom: 0.5rem;
+      width: 2px;
+      background: var(--border-color);
+    }
+    .timeline-item {
+      position: relative;
+      margin-bottom: 2.5rem;
+    }
+    .timeline-item:last-child {
+      margin-bottom: 0;
+    }
+    .timeline-marker {
+      position: absolute;
+      left: -2rem;
+      top: 0.25rem;
+      width: 16px;
+      height: 16px;
+      border-radius: 50%;
+      background: var(--bg-color);
+      border: 3px solid var(--primary);
+      box-shadow: 0 0 8px var(--primary-glow);
+    }
+    .timeline-item.latest .timeline-marker {
+      background: var(--primary);
+      animation: pulse 2s infinite;
+    }
+    .version-header {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      margin-bottom: 0.75rem;
+      flex-wrap: wrap;
+    }
+    .ver-badge {
+      background: rgba(0, 210, 255, 0.15);
+      color: var(--primary);
+      border: 1px solid rgba(0, 210, 255, 0.3);
+      font-size: 0.75rem;
+      font-weight: 700;
+      padding: 2px 8px;
+      border-radius: 4px;
+    }
+    .timeline-item.latest .ver-badge {
+      background: rgba(16, 185, 129, 0.15);
+      color: var(--success);
+      border-color: rgba(16, 185, 129, 0.3);
+    }
+    .ver-date {
+      color: var(--text-secondary);
+      font-size: 0.85rem;
+    }
+    .ver-summary {
+      font-size: 1.05rem;
+      font-weight: 600;
+      color: var(--text-primary);
+      margin-bottom: 0.5rem;
+    }
+    .ver-details {
+      list-style-type: none;
+      padding-left: 0;
+    }
+    .ver-details li {
+      position: relative;
+      padding-left: 1.25rem;
+      margin-bottom: 0.35rem;
+      font-size: 0.9rem;
+      color: var(--text-secondary);
+      line-height: 1.5;
+    }
+    .ver-details li::before {
+      content: '•';
+      position: absolute;
+      left: 0.25rem;
+      color: var(--primary);
+      font-weight: bold;
+    }
+    .timeline-item.latest .ver-details li::before {
+      color: var(--success);
+    }
+    
+    @keyframes pulse {
+      0% {
+        box-shadow: 0 0 0 0 rgba(0, 210, 255, 0.7);
+      }
+      70% {
+        box-shadow: 0 0 0 6px rgba(0, 210, 255, 0);
+      }
+      100% {
+        box-shadow: 0 0 0 0 rgba(0, 210, 255, 0);
+      }
+    }
+  </style>
+</head>
+<body class="dark-theme">
+  <header class="app-header">
+    <div class="header-logo-section">
+      <div class="header-badge">TSURUGA <span class="version-badge">v1.6.0</span></div>
+      <h1>敦賀イカメタル情報ナビ <span>Squid Metal Intel Dashboard</span></h1>
+    </div>
+  </header>
+
+  <div class="changelog-container">
+    <div class="back-link-wrapper">
+      <a href="index.html" class="back-btn">
+        <span>←</span> ダッシュボードに戻る
+      </a>
+    </div>
+
+    <div class="changelog-card">
+      <h2 class="changelog-title">アップデート更新履歴</h2>
+      
+      <div class="timeline">
+        <!-- v1.6.0 -->
+        <div class="timeline-item latest">
+          <div class="timeline-marker"></div>
+          <div class="version-header">
+            <span class="ver-badge">v1.6.0</span>
+            <span class="ver-date">2026年6月23日</span>
+          </div>
+          <div class="ver-summary">更新履歴ページの追加</div>
+          <ul class="ver-details">
+            <li>ナビゲーションやフッターから遷移可能な専用の「更新履歴」別ページを新規作成。</li>
+            <li>過去のすべてのバージョン履歴、修正詳細、機能追加の内容をタイムライン形式で可視化。</li>
+          </ul>
+        </div>
+
+        <!-- v1.5.3 -->
+        <div class="timeline-item">
+          <div class="timeline-marker"></div>
+          <div class="version-header">
+            <span class="ver-badge">v1.5.3</span>
+            <span class="ver-date">2026年6月23日</span>
+          </div>
+          <div class="ver-summary">海水温データのリアルタイム自動取得化</div>
+          <ul class="ver-details">
+            <li>これまで固定の目安値（21.8℃）だった海水温表示を、Open-Meteoの海洋気象API（Marine Weather API）から取得した敦賀沖の実測海水温データに動的更新。</li>
+            <li>アクセス時点の現在時刻に応じた最新の水温がヘッダーに反映されるようロジックを実装。</li>
+          </ul>
+        </div>
+
+        <!-- v1.5.2 -->
+        <div class="timeline-item">
+          <div class="timeline-marker"></div>
+          <div class="version-header">
+            <span class="ver-badge">v1.5.2</span>
+            <span class="ver-date">2026年6月23日</span>
+          </div>
+          <div class="ver-summary">外部天気予報リンクの不具合修正</div>
+          <ul class="ver-details">
+            <li>「Yahoo!天気 (敦賀市)」のURLが正常に開かない問題を、敦賀市のピンポイント予報ページの正しいURLに変更して解消。</li>
+          </ul>
+        </div>
+
+        <!-- v1.5.0 - v1.5.1 -->
+        <div class="timeline-item">
+          <div class="timeline-marker"></div>
+          <div class="version-header">
+            <span class="ver-badge">v1.5.1</span>
+            <span class="ver-date">2026年6月23日</span>
+          </div>
+          <div class="ver-summary">外部リアルタイム検索クエリの修正</div>
+          <ul class="ver-details">
+            <li>検索リンク内の文字エンコーディング・スペルミス（「ィカメタル」「酌果」）を「イカメタル」「釣果」の正しいキーワードに修正。</li>
+          </ul>
+        </div>
+
+        <!-- v1.3.0 - v1.4.0 -->
+        <div class="timeline-item">
+          <div class="timeline-marker"></div>
+          <div class="version-header">
+            <span class="ver-badge">v1.4.0</span>
+            <span class="ver-date">2026年6月23日</span>
+          </div>
+          <div class="ver-summary">スッテサイズ情報の追加・解析</div>
+          <ul class="ver-details">
+            <li>各船宿ブログの投稿テキストからスッテサイズ（「10号」「15号」など）を自動で抽出する正規表現エンジンを追加。</li>
+            <li>タイムライン上に期間中の「主流スッテサイズ（最も使われていたサイズ）」をトレンドとして集計・可視化。</li>
+          </ul>
+        </div>
+
+        <!-- v1.2.0 -->
+        <div class="timeline-item">
+          <div class="timeline-marker"></div>
+          <div class="version-header">
+            <span class="ver-badge">v1.2.0</span>
+            <span class="ver-date">2026年6月23日</span>
+          </div>
+          <div class="ver-summary">5日間の海況・気象予報機能の追加</div>
+          <ul class="ver-details">
+            <li>敦賀沖の5日間の天気・風向風速・波の高さを予測するカード型ウィジェットを左カラム下部へ実装。</li>
+            <li>風速4.5m以上または波高0.8m以上の荒天時に自動的に赤い枠線で警告を表示する「しけアラート」機能を追加。</li>
+            <li>潮汐グラフと天気タイムラインを合成して重ねて表示できるオーバーレイ機能を追加。</li>
+          </ul>
+        </div>
+
+        <!-- v1.1.0 -->
+        <div class="timeline-item">
+          <div class="timeline-marker"></div>
+          <div class="version-header">
+            <span class="ver-badge">v1.1.0</span>
+            <span class="ver-date">2026年6月23日</span>
+          </div>
+          <div class="ver-summary">RSSブログアグリゲーターの導入とSNS制限</div>
+          <ul class="ver-details">
+            <li>API有料化および高コストなTwitter/Instagramの連携を廃止。</li>
+            <li>完全無料で利用可能な船宿ブログ（一美丸、豊漁丸、春洋丸など）のRSSフィードを活用したCORS回避型ブログ収集システムへと切り替え。</li>
+            <li>マイカ・ケンサキイカ・スッテなどのイカメタル関連ワードのみに厳密フィルタリングする機能を実装。</li>
+          </ul>
+        </div>
+
+        <!-- v1.0.0 -->
+        <div class="timeline-item">
+          <div class="timeline-marker"></div>
+          <div class="version-header">
+            <span class="ver-badge">v1.0.0</span>
+            <span class="ver-date">2026年6月23日</span>
+          </div>
+          <div class="ver-summary">敦賀イカメタル情報ナビ リリース</div>
+          <ul class="ver-details">
+            <li>「月齢予測（イカの明暗警戒心への影響）」「潮汐予測」「外部検索ナビ」を統合した高機能ダッシュボードの初期バージョンを公開。</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <footer class="app-footer">
+    <p>&copy; 2026 Tsuruga Squid Metal Intel Dashboard (v1.6.0). Pair programmed with Antigravity.</p>
+  </footer>
+</body>
+</html>
