@@ -115,8 +115,8 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   ];
 
-  // 5-Day Weather Forecast mock database (Today and next 4 days)
-  const WEATHER_FORECAST = [
+  // 5-Day Weather Forecast database (Fallback mock data, updated dynamically from API)
+  let WEATHER_FORECAST = [
     { icon: '☀️', cond: '晴のち曇', windDir: '南西', windSpd: '3.2m', wave: '0.4m', rough: false },
     { icon: '☁️', cond: '曇り', windDir: '北東', windSpd: '2.5m', wave: '0.3m', rough: false },
     { icon: '☔', cond: '雨のち曇', windDir: '北西', windSpd: '4.8m', wave: '0.8m', rough: true },
@@ -127,6 +127,84 @@ document.addEventListener('DOMContentLoaded', () => {
   // --- State ---
   let activeMediaFilter = 'all';
   let searchQuery = '';
+
+  let weatherTimeline = [
+    { hour: 3, icon: '☀️', text: '晴 南西2m 波0.3m', yOffset: 20 },
+    { hour: 9, icon: '☀️', text: '晴 南西3m 波0.3m', yOffset: 20 },
+    { hour: 15, icon: '☁️', text: '曇 南西3m 波0.4m', yOffset: 20 },
+    { hour: 21, icon: '☁️', text: '曇 南西4m 波0.4m', yOffset: 20 }
+  ];
+
+  function getWeatherCondition(code) {
+    if (code === 0) return { icon: '☀️', cond: '快晴' };
+    if (code === 1) return { icon: '🌤️', cond: '晴れ' };
+    if (code === 2) return { icon: '⛅', cond: '晴のち曇' };
+    if (code === 3) return { icon: '☁️', cond: '曇り' };
+    if (code >= 45 && code <= 48) return { icon: '🌫️', cond: '霧' };
+    if (code >= 51 && code <= 65) return { icon: '☔', cond: '雨' };
+    if (code >= 80 && code <= 82) return { icon: '☔', cond: 'にわか雨' };
+    if (code >= 95 && code <= 99) return { icon: '⚡', cond: '雷雨' };
+    return { icon: '☁️', cond: '曇り' };
+  }
+
+  function getWindDirectionName(deg) {
+    const directions = ['北', '北東', '東', '南東', '南', '南西', '西', '北西'];
+    const idx = Math.round(deg / 45) % 8;
+    return directions[idx];
+  }
+
+  async function fetchRealWeather() {
+    try {
+      const lat = 35.75;
+      const lon = 136.05;
+      
+      const weatherUrl = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&daily=weather_code,wind_speed_10m_max,wind_direction_10m_dominant&hourly=weather_code,wind_speed_10m,wind_direction_10m&wind_speed_unit=ms&timezone=Asia%2FTokyo`;
+      const marineUrl = `https://marine-api.open-meteo.com/v1/marine?latitude=${lat}&longitude=${lon}&daily=wave_height_max&hourly=wave_height&timezone=Asia%2FTokyo`;
+      
+      const [weatherRes, marineRes] = await Promise.all([
+        fetch(weatherUrl).then(r => r.json()),
+        fetch(marineUrl).then(r => r.json())
+      ]);
+      
+      if (weatherRes.daily && marineRes.daily) {
+        const newForecast = [];
+        for (let i = 0; i < 5; i++) {
+          const code = weatherRes.daily.weather_code[i] || 0;
+          const { icon, cond } = getWeatherCondition(code);
+          const windSpdVal = weatherRes.daily.wind_speed_10m_max[i] || 0;
+          const windDirVal = weatherRes.daily.wind_direction_10m_dominant[i] || 0;
+          const waveVal = marineRes.daily.wave_height_max[i] || 0;
+          
+          const windSpd = windSpdVal.toFixed(1) + 'm';
+          const windDir = getWindDirectionName(windDirVal);
+          const wave = waveVal.toFixed(1) + 'm';
+          const rough = (waveVal >= 0.8 || windSpdVal >= 4.5);
+          
+          newForecast.push({ icon, cond, windDir, windSpd, wave, rough });
+        }
+        WEATHER_FORECAST = newForecast;
+      }
+
+      if (weatherRes.hourly && marineRes.hourly) {
+        const hours = [3, 9, 15, 21];
+        weatherTimeline = hours.map(h => {
+          const code = weatherRes.hourly.weather_code[h] || 0;
+          const { icon, cond } = getWeatherCondition(code);
+          const windSpdVal = weatherRes.hourly.wind_speed_10m[h] || 0;
+          const windDirVal = weatherRes.hourly.wind_direction_10m[h] || 0;
+          const waveVal = marineRes.hourly.wave_height[h] || 0;
+          
+          const condName = cond.slice(0, 1);
+          const windDir = getWindDirectionName(windDirVal);
+          const text = `${condName} ${windDir}${windSpdVal.toFixed(0)}m 波${waveVal.toFixed(1)}m`;
+          
+          return { hour: h, icon, text, yOffset: 20 };
+        });
+      }
+    } catch (err) {
+      console.warn("Failed to fetch live weather from Open-Meteo, using fallback mock data.", err);
+    }
+  }
 
   // --- Elements ---
   const headerMoonPhaseEl = document.getElementById('header-moon-phase');
@@ -337,12 +415,7 @@ document.addEventListener('DOMContentLoaded', () => {
     ctx.fill();
 
     // --- Weather (天候・風速) Timeline Overlay ---
-    const weatherTimeline = [
-      { hour: 3, icon: '☀️', text: '晴 南西2m 波0.3m', yOffset: 20 },
-      { hour: 9, icon: '☀️', text: '晴 南西3m 波0.3m', yOffset: 20 },
-      { hour: 15, icon: '☁️', text: '曇 南西3m 波0.4m', yOffset: 20 },
-      { hour: 21, icon: '☁️', text: '曇 南西4m 波0.4m', yOffset: 20 }
-    ];
+    // (Uses the outer scoped weatherTimeline populated dynamically from API)
 
     weatherTimeline.forEach(wPoint => {
       const wx = (wPoint.hour / 24) * width;
@@ -635,9 +708,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // --- Initial Activation ---
   updateMoonUI();
-  drawTideChart();
-  renderWeatherForecast();
   renderFeeds();
+
+  // Fetch real weather and then render charts
+  fetchRealWeather().then(() => {
+    drawTideChart();
+    renderWeatherForecast();
+  });
 
   window.addEventListener('resize', () => {
     drawTideChart();
