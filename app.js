@@ -1012,20 +1012,35 @@ document.addEventListener('DOMContentLoaded', () => {
     btnSyncFeed.addEventListener('click', () => {
       if (syncLoader) syncLoader.classList.remove('hidden');
       
+      const cacheBuster = `data/feeds.json?t=${new Date().getTime()}`;
+      
       // Execute live fetch on sync click to load actual fresh reports
       Promise.all([
         fetchRealWeather(),
-        fetchLiveBlogs().then(liveFeeds => {
-          if (liveFeeds.length > 0) {
-            const merged = [...liveFeeds];
-            SOCIAL_FEEDS.forEach(mock => {
-              if (!merged.some(f => f.url === mock.url || f.body === mock.body)) {
-                merged.push(mock);
+        fetch(cacheBuster)
+          .then(res => {
+            if (!res.ok) throw new Error('No cached data');
+            return res.json();
+          })
+          .then(cachedFeeds => {
+            if (cachedFeeds && cachedFeeds.length > 0) {
+              loadedFeeds = cachedFeeds;
+            }
+          })
+          .catch(() => {
+            // Fallback: fetch live blogs dynamically in-browser
+            return fetchLiveBlogs().then(liveFeeds => {
+              if (liveFeeds.length > 0) {
+                const merged = [...liveFeeds];
+                SOCIAL_FEEDS.forEach(mock => {
+                  if (!merged.some(f => f.url === mock.url || f.body === mock.body)) {
+                    merged.push(mock);
+                  }
+                });
+                loadedFeeds = merged;
               }
             });
-            loadedFeeds = merged;
-          }
-        })
+          })
       ]).then(() => {
         if (syncLoader) syncLoader.classList.add('hidden');
         drawTideChart();
