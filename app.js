@@ -739,17 +739,32 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }
 
+  function formatLocalDate(date) {
+    const y = date.getFullYear();
+    const m = String(date.getMonth() + 1).padStart(2, '0');
+    const d = String(date.getDate()).padStart(2, '0');
+    return `${y}-${m}-${d}`;
+  }
+
   // --- 3-Day Grouped Timeline Analytics ---
   function updateTrendsTimeline(activeFeeds) {
     trendsTimelineContainer.innerHTML = '';
-    const today = new Date();
+    
+    // Base the timeline on the latest feed date to ensure trends are populated, fallback to today
+    let baseDate = new Date();
+    if (activeFeeds && activeFeeds.length > 0) {
+      const dates = activeFeeds.map(f => new Date(f.date).getTime()).filter(t => !isNaN(t));
+      if (dates.length > 0) {
+        baseDate = new Date(Math.max(...dates));
+      }
+    }
     
     for (let p = 0; p < 10; p++) {
       const pStartOffset = p * 3;
       const pEndOffset = (p * 3) + 2;
 
-      const pStartDate = new Date(today.getTime() - pEndOffset * 24 * 60 * 60 * 1000);
-      const pEndDate = new Date(today.getTime() - pStartOffset * 24 * 60 * 60 * 1000);
+      const pStartDate = new Date(baseDate.getTime() - pEndOffset * 24 * 60 * 60 * 1000);
+      const pEndDate = new Date(baseDate.getTime() - pStartOffset * 24 * 60 * 60 * 1000);
 
       const mStart = pStartDate.getMonth() + 1;
       const dStart = pStartDate.getDate();
@@ -757,8 +772,8 @@ document.addEventListener('DOMContentLoaded', () => {
       const dEnd = pEndDate.getDate();
       const label = `${mStart}/${dStart}〜${mEnd}/${dEnd}`;
 
-      const startStr = pStartDate.toISOString().split('T')[0];
-      const endStr = pEndDate.toISOString().split('T')[0];
+      const startStr = formatLocalDate(pStartDate);
+      const endStr = formatLocalDate(pEndDate);
 
       const periodFeeds = activeFeeds.filter(feed => {
         return feed.date >= startStr && feed.date <= endStr;
@@ -1032,17 +1047,30 @@ document.addEventListener('DOMContentLoaded', () => {
   // Fetch real weather and real blog data in background
   Promise.all([
     fetchRealWeather(),
-    fetchLiveBlogs().then(liveFeeds => {
-      if (liveFeeds.length > 0) {
-        const merged = [...liveFeeds];
-        SOCIAL_FEEDS.forEach(mock => {
-          if (!merged.some(f => f.url === mock.url || f.body === mock.body)) {
-            merged.push(mock);
+    fetch('data/feeds.json')
+      .then(res => {
+        if (!res.ok) throw new Error('No cached data');
+        return res.json();
+      })
+      .then(cachedFeeds => {
+        if (cachedFeeds && cachedFeeds.length > 0) {
+          loadedFeeds = cachedFeeds;
+        }
+      })
+      .catch(() => {
+        // Fallback to fetching live blogs dynamically in-browser
+        return fetchLiveBlogs().then(liveFeeds => {
+          if (liveFeeds.length > 0) {
+            const merged = [...liveFeeds];
+            SOCIAL_FEEDS.forEach(mock => {
+              if (!merged.some(f => f.url === mock.url || f.body === mock.body)) {
+                merged.push(mock);
+              }
+            });
+            loadedFeeds = merged;
           }
         });
-        loadedFeeds = merged;
-      }
-    })
+      })
   ]).then(() => {
     drawTideChart();
     renderWeatherForecast();
